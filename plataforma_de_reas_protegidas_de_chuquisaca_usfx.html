@@ -1,0 +1,2000 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma de Áreas Protegidas de Chuquisaca | Carrera de Biología USFX</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Tipografía limpia y condensada estilo GTA VI / NatGeo (Sin cursivas) -->
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --accent-color: #4d7c0f; /* Verde natural sobrio por defecto */
+            --accent-pill: #ecfccb;
+            --text-main: #18181b;
+            --bg-light: #f4f3ee;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* Tipografía condensada fuerte estilo GTA VI / Póster Parque Nacional */
+        .font-condensed {
+            font-family: 'Barlow Condensed', sans-serif;
+            letter-spacing: -0.01em;
+        }
+
+        /* Tarjeta Banner Fotográfico Completo estilo GTA VI */
+        .gta-banner-card {
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .gta-banner-card:hover {
+            transform: translateY(-4px);
+        }
+        .gta-banner-card .banner-img {
+            transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .gta-banner-card:hover .banner-img {
+            transform: scale(1.05);
+        }
+
+        /* Mosaico Cuadrado estilo NPS / Tompkins */
+        .mosaic-tile {
+            position: relative;
+            overflow: hidden;
+        }
+        .mosaic-tile img {
+            transition: transform 0.7s ease;
+        }
+        .mosaic-tile:hover img {
+            transform: scale(1.06);
+        }
+
+        /* Cortina doble Tompkins */
+        .split-curtain {
+            transition: flex 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        @media (min-width: 1024px) {
+            .split-container:hover .split-curtain {
+                flex: 1;
+            }
+            .split-container .split-curtain:hover {
+                flex: 1.45;
+            }
+        }
+
+        /* Carrusel sobrio de instituciones */
+        @keyframes marquee {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            display: flex;
+            width: 200%;
+            animation: marquee 36s linear infinite;
+        }
+        .animate-marquee:hover {
+            animation-play-state: paused;
+        }
+
+        /* Utilidades dinámicas discretas */
+        .accent-bg { background-color: var(--accent-color); }
+        .accent-text { color: var(--accent-color); }
+        .accent-border { border-color: var(--accent-color); }
+    </style>
+</head>
+<body class="antialiased selection:bg-stone-800 selection:text-white">
+
+    <!-- BARRA INSTITUCIONAL USFX Y MONITOREO DE DESCARGAS -->
+    <div class="bg-[#181a17] text-stone-300 text-xs py-2.5 px-4 md:px-10 flex flex-wrap justify-between items-center z-50 relative border-b border-stone-800">
+        <div class="flex items-center space-x-3">
+            <span class="font-semibold tracking-wider uppercase text-white">USFX • Carrera de Biología</span>
+            <span class="text-stone-500 hidden sm:inline">|</span>
+            <span class="text-stone-400 hidden sm:inline">Plataforma Interinstitucional de Áreas Protegidas de Chuquisaca</span>
+        </div>
+        <div class="flex items-center space-x-3 mt-1 sm:mt-0">
+            <button onclick="openDownloadLogModal()" class="bg-stone-800 hover:bg-stone-700 text-stone-200 px-3 py-1 rounded text-xs font-medium flex items-center space-x-1.5 transition border border-stone-700">
+                <i data-lucide="clipboard-list" class="w-3.5 h-3.5"></i>
+                <span>Monitoreo de Descargas (<span id="download-counter-badge">3</span>)</span>
+            </button>
+            <button onclick="openWPModal()" class="bg-stone-800 hover:bg-stone-700 text-stone-200 px-3 py-1 rounded text-xs font-medium flex items-center space-x-1.5 transition border border-stone-700">
+                <i data-lucide="help-circle" class="w-3.5 h-3.5"></i>
+                <span>¿Cómo subir los PDFs a WordPress?</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- CABECERA PRINCIPAL LIMPIA Y MINIMALISTA -->
+    <header class="sticky top-0 z-40 bg-[#f4f3ee]/95 backdrop-blur-md border-b border-stone-300">
+        <div class="max-w-7xl mx-auto px-4 md:px-10 h-20 flex items-center justify-between">
+            <!-- Logo / Título -->
+            <button onclick="showMainPortal()" class="flex items-center space-x-3 text-left focus:outline-none group">
+                <div class="w-10 h-10 bg-stone-900 text-white flex items-center justify-center rounded">
+                    <i data-lucide="mountain" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <span class="text-[10px] uppercase tracking-[0.22em] text-stone-500 block font-semibold">Chuquisaca • Bolivia</span>
+                    <span class="font-condensed text-2xl font-extrabold tracking-wide text-stone-900 uppercase block leading-none">
+                        ÁREAS PROTEGIDAS & BIODIVERSIDAD
+                    </span>
+                </div>
+            </button>
+
+            <!-- Navegación Directa -->
+            <nav class="hidden lg:flex items-center space-x-1">
+                <button onclick="showMainPortal()" id="nav-home" class="px-4 py-2 rounded text-sm font-semibold bg-stone-900 text-white transition">
+                    Panorama General
+                </button>
+                <button onclick="openAreaPage('palmar')" id="nav-palmar" class="px-4 py-2 rounded text-sm font-medium text-stone-700 hover:bg-stone-200/70 transition flex items-center space-x-2">
+                    <span class="w-2 h-2 rounded-full bg-[#4d7c0f]"></span>
+                    <span>ANMI El Palmar</span>
+                </button>
+                <button onclick="openAreaPage('inao')" id="nav-inao" class="px-4 py-2 rounded text-sm font-medium text-stone-700 hover:bg-stone-200/70 transition flex items-center space-x-2">
+                    <span class="w-2 h-2 rounded-full bg-[#0f766e]"></span>
+                    <span>PN-ANMI Serranía del Iñao</span>
+                </button>
+                <button onclick="openAreaPage('willca')" id="nav-willca" class="px-4 py-2 rounded text-sm font-medium text-stone-700 hover:bg-stone-200/70 transition flex items-center space-x-2">
+                    <span class="w-2 h-2 rounded-full bg-[#b45309]"></span>
+                    <span>APM Monte Willca</span>
+                </button>
+                <a href="#directorio-municipal" onclick="showMainPortal()" class="px-4 py-2 rounded text-sm font-medium text-stone-700 hover:bg-stone-200/70 transition flex items-center space-x-2">
+                    <span class="w-2 h-2 rounded-full bg-[#9a3412]"></span>
+                    <span>Chaco y Cintis (8)</span>
+                </a>
+            </nav>
+
+            <!-- Botón Sobrio de Aporte -->
+            <div>
+                <button onclick="openJoinModal()" class="bg-stone-900 hover:bg-stone-800 text-white font-semibold text-xs md:text-sm px-5 py-2.5 rounded transition flex items-center space-x-2">
+                    <span>Subir Tesis / Unirse</span>
+                    <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ========================================== -->
+    <!-- VISTA 1: PORTAL PRINCIPAL DE CHUQUISACA    -->
+    <!-- ========================================== -->
+    <main id="main-portal-view" class="block">
+
+        <!-- HERO FOTOGRÁFICO A PANTALLA COMPLETA (Priorizando la fotografía con difuminado sutil) -->
+        <section class="relative h-[82vh] min-h-[560px] flex items-end overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=2000&q=85" alt="Serranías y Bosques de Chuquisaca" class="absolute inset-0 w-full h-full object-cover object-center">
+            <!-- Difuminado sutil oscuro abajo y a la izquierda para lectura limpia -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-black/10"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-transparent to-transparent"></div>
+
+            <div class="relative z-10 max-w-7xl mx-auto px-4 md:px-10 pb-16 w-full">
+                <div class="max-w-3xl">
+                    <p class="text-xs md:text-sm font-semibold uppercase tracking-[0.25em] text-stone-200 mb-3">
+                        Bosques Secos • Tucumano-Boliviano • Chaco Serrano • Gran Chaco • Puna
+                    </p>
+                    <h1 class="font-condensed text-5xl sm:text-7xl md:text-8xl font-extrabold text-white uppercase leading-[0.92] mb-5">
+                        PATRIMONIO NATURAL DE CHUQUISACA
+                    </h1>
+                    <p class="text-stone-200 text-base sm:text-lg leading-relaxed mb-8 font-normal max-w-2xl">
+                        Repositorio científico y plataforma interinstitucional impulsada por la <strong>Carrera de Biología (USFX)</strong> para articular la investigación, reglamentación y conservación de las <strong>2 Áreas Nacionales</strong> y <strong>9 Áreas Municipales</strong> del departamento.
+                    </p>
+                    <div class="flex flex-wrap gap-3">
+                        <a href="#areas-principales" class="px-7 py-3.5 bg-white text-stone-950 font-bold text-sm rounded hover:bg-stone-200 transition inline-flex items-center space-x-2">
+                            <span>Explorar las Áreas Protegidas</span>
+                            <i data-lucide="arrow-down" class="w-4 h-4"></i>
+                        </a>
+                        <button onclick="openAreaPage('willca', 'investigacion')" class="px-7 py-3.5 bg-black/50 backdrop-blur-md text-white border border-white/30 font-semibold text-sm rounded hover:bg-black/70 transition">
+                            Ver Investigaciones USFX
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN TOMPKINS CONSERVATION (Fondo Blanco Limpio + Dos Bloques Fotográficos Cuadrados) -->
+        <section class="bg-white py-20 border-b border-stone-200">
+            <div class="max-w-7xl mx-auto px-4 md:px-10">
+                <div class="text-center mb-12">
+                    <div class="inline-flex items-center space-x-3 text-sm md:text-base font-bold tracking-[0.2em] uppercase text-stone-900">
+                        <span>EXPLORA</span>
+                        <span class="text-amber-700">|</span>
+                        <span class="text-amber-700">Nuestro Territorio</span>
+                        <span class="text-amber-700">|</span>
+                    </div>
+                    <p class="text-stone-600 text-sm md:text-base max-w-2xl mx-auto mt-3 font-medium">
+                        La plataforma integra las Áreas Protegidas de Carácter Nacional administradas por el SERNAP con las Áreas Protegidas Subnacionales creadas por los Gobiernos Autónomos Municipales y comunidades locales.
+                    </p>
+                </div>
+
+                <div class="split-container flex flex-col lg:flex-row gap-5 h-auto lg:h-[440px]">
+                    <!-- Bloque 1: Nacionales -->
+                    <div onclick="openAreaPage('palmar')" class="split-curtain flex-1 relative overflow-hidden cursor-pointer group min-h-[300px]">
+                        <img src="https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=1200&q=85" alt="Áreas Nacionales Chuquisaca" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                        <div class="absolute inset-0 bg-black/35 group-hover:bg-black/25 transition"></div>
+                        <div class="absolute inset-0 p-8 flex flex-col justify-center items-center text-center">
+                            <h3 class="font-condensed text-4xl md:text-6xl font-extrabold text-white tracking-wide uppercase">NACIONALES</h3>
+                            <p class="text-xs uppercase tracking-[0.25em] text-stone-200 mt-2 font-semibold">SERNAP • EL PALMAR & SERRANÍA DEL IÑAO</p>
+                        </div>
+                    </div>
+
+                    <!-- Bloque 2: Municipales -->
+                    <div onclick="openAreaPage('willca')" class="split-curtain flex-1 relative overflow-hidden cursor-pointer group min-h-[300px]">
+                        <img src="https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1200&q=85" alt="Áreas Municipales Chuquisaca" class="w-full h-full object-cover group-hover:scale-105 transition duration-700">
+                        <div class="absolute inset-0 bg-black/35 group-hover:bg-black/25 transition"></div>
+                        <div class="absolute inset-0 p-8 flex flex-col justify-center items-center text-center">
+                            <h3 class="font-condensed text-4xl md:text-6xl font-extrabold text-white tracking-wide uppercase">MUNICIPALES</h3>
+                            <p class="text-xs uppercase tracking-[0.25em] text-stone-200 mt-2 font-semibold">MONTE WILLCA (SUCRE) • CHACO • CINTIS</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LAS 3 ÁREAS PROTEGIDAS PRINCIPALES EN EL ESTILO EXACTO DE LAS TARJETAS DE GTA VI -->
+        <!-- (Fotografía de fondo a sangre, degradado lateral suave, título condensado grande y botón píldora) -->
+        <section id="areas-principales" class="py-20 max-w-7xl mx-auto px-4 md:px-10 space-y-12">
+            <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-stone-300 pb-6">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-[0.2em] text-stone-500 block mb-1">Expedientes Completos con Subpáginas</span>
+                    <h2 class="font-condensed text-4xl md:text-5xl font-extrabold text-stone-900 uppercase">Áreas Prioritarias de Chuquisaca</h2>
+                </div>
+                <p class="text-stone-600 text-sm max-w-md mt-2 md:mt-0">
+                    Cada área cuenta con su propia página y pestañas de <strong>Inicio, Conteo de Especies + iNaturalist, Reglamentación PDF, Turismo, Investigación USFX y Proyectos</strong>.
+                </p>
+            </div>
+
+            <!-- BANNER GTA VI #1: ANMI EL PALMAR (Tono Verde Lechuga Natural en detalles) -->
+            <div onclick="openAreaPage('palmar')" class="gta-banner-card min-h-[450px] flex items-center cursor-pointer shadow-lg">
+                <img src="https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1800&q=85" alt="ANMI El Palmar Presto" class="banner-img absolute inset-0 w-full h-full object-cover object-center">
+                <!-- Difuminado suave izquierdo para que las letras resalten sobre la foto -->
+                <div class="absolute inset-0 bg-gradient-to-r from-[#131d10]/95 via-[#131d10]/65 to-transparent"></div>
+
+                <div class="relative z-10 p-8 sm:p-14 md:p-16 max-w-2xl">
+                    <span class="text-xs sm:text-sm font-bold uppercase tracking-[0.2em] text-[#bef264] block mb-2">
+                        ÁREA NATURAL DE MANEJO INTEGRADO • PRESTO (59.484 HA)
+                    </span>
+                    <h3 class="font-condensed text-5xl sm:text-6xl md:text-7xl font-extrabold text-[#f7fee7] uppercase leading-[0.92] mb-4">
+                        ANMI EL PALMAR:<br>BOSQUE DE JANCHI COCO
+                    </h3>
+                    <p class="text-stone-200 text-sm sm:text-base leading-relaxed mb-8 max-w-xl">
+                        Hogar exclusivo de la palmera endémica <em>Parajubaea torallyi</em> y bosques de pino de monte en los Valles Secos Interandinos. Registra 313 especies de flora y 155 vertebrados como el Oso Jucumari y la Paraba Frente Roja.
+                    </p>
+                    <button class="inline-flex items-center space-x-3 bg-[#d9f99d] hover:bg-[#bef264] text-stone-950 font-bold px-7 py-3.5 rounded-full text-sm transition">
+                        <span>Descubre más</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- BANNER GTA VI #2: PN-ANMI SERRANÍA DEL IÑAO (Tono Verde Agua / Turquesa Sobrio) -->
+            <div onclick="openAreaPage('inao')" class="gta-banner-card min-h-[450px] flex items-center cursor-pointer shadow-lg">
+                <img src="https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=1800&q=85" alt="Serranía del Iñao" class="banner-img absolute inset-0 w-full h-full object-cover object-center">
+                <div class="absolute inset-0 bg-gradient-to-r from-[#0c211f]/95 via-[#0c211f]/65 to-transparent"></div>
+
+                <div class="relative z-10 p-8 sm:p-14 md:p-16 max-w-2xl">
+                    <span class="text-xs sm:text-sm font-bold uppercase tracking-[0.2em] text-[#99f6e4] block mb-2">
+                        PARQUE NACIONAL Y ANMI • SUBANDINO CHUQUISAQUEÑO (263.090 HA)
+                    </span>
+                    <h3 class="font-condensed text-5xl sm:text-6xl md:text-7xl font-extrabold text-[#f0fdfa] uppercase leading-[0.92] mb-4">
+                        SERRANÍA DEL IÑAO:<br>CORREDOR TUCUMANO Y CHACO
+                    </h3>
+                    <p class="text-stone-200 text-sm sm:text-base leading-relaxed mb-8 max-w-xl">
+                        Tres cordones montañosos (Iñao, Ñahuañanca y Khaska Orqo) que conectan 4 municipios y 48 comunidades. Alberga 644 especies de plantas vasculares y 256 vertebrados incluyendo Jaguar, Tapir y Paraba Militar.
+                    </p>
+                    <button class="inline-flex items-center space-x-3 bg-[#99f6e4] hover:bg-[#5eead4] text-stone-950 font-bold px-7 py-3.5 rounded-full text-sm transition">
+                        <span>Descubre más</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- BANNER GTA VI #3: APM ANMI MONTE WILLCA (Tono Amarillo Arena / Ocre Cálido) -->
+            <div onclick="openAreaPage('willca')" class="gta-banner-card min-h-[450px] flex items-center cursor-pointer shadow-lg">
+                <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1800&q=85" alt="Monte Willca Sucre Distrito 7" class="banner-img absolute inset-0 w-full h-full object-cover object-center">
+                <div class="absolute inset-0 bg-gradient-to-r from-[#231b0c]/95 via-[#231b0c]/65 to-transparent"></div>
+
+                <div class="relative z-10 p-8 sm:p-14 md:p-16 max-w-2xl">
+                    <span class="text-xs sm:text-sm font-bold uppercase tracking-[0.2em] text-[#fde68a] block mb-2">
+                        ÁREA PROTEGIDA MUNICIPAL • DISTRITO 7 DE SUCRE (11.756 HA)
+                    </span>
+                    <h3 class="font-condensed text-5xl sm:text-6xl md:text-7xl font-extrabold text-[#fefce8] uppercase leading-[0.92] mb-4">
+                        APM MONTE WILLCA:<br>VALLE SECO DE RÍO CHICO
+                    </h3>
+                    <p class="text-stone-200 text-sm sm:text-base leading-relaxed mb-8 max-w-xl">
+                        Bosques xerofíticos de Willca (<em>Anadenanthera colubrina</em>) y cactáceas columnares gestionados por 7 comunidades locales junto a la Carrera de Biología (USFX) para el monitoreo de mariposas, murciélagos y aves endémicas.
+                    </p>
+                    <button class="inline-flex items-center space-x-3 bg-[#fde68a] hover:bg-[#fcd34d] text-stone-950 font-bold px-7 py-3.5 rounded-full text-sm transition">
+                        <span>Descubre más</span>
+                        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- BARRA DE IMPACTO ESTILO NATGEO PRISTINE SEAS / RE:WILD (Fotografía de fondo + Iconos blancos monocromáticos limpios) -->
+        <section class="relative py-24 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=2000&q=85" alt="Bosque Húmedo Chuquisaca" class="absolute inset-0 w-full h-full object-cover">
+            <div class="absolute inset-0 bg-[#0d1f18]/85"></div>
+
+            <div class="relative z-10 max-w-7xl mx-auto px-4 md:px-10">
+                <div class="text-center mb-14">
+                    <h2 class="font-condensed text-4xl md:text-6xl font-bold text-white uppercase tracking-wide">
+                        JUNTOS ESTAMOS MARCANDO LA DIFERENCIA EN CHUQUISACA
+                    </h2>
+                    <p class="text-stone-300 max-w-2xl mx-auto text-sm md:text-base mt-2">
+                        Datos consolidados de los Planes de Manejo del SERNAP, el Atlas de Áreas Protegidas Municipales y las investigaciones de campo de la USFX.
+                    </p>
+                </div>
+
+                <!-- 4 cajas finas con borde sutil e iconos de 1 solo color blanco -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="border border-white/20 rounded-lg p-8 text-center bg-black/20 backdrop-blur-xs">
+                        <i data-lucide="trees" class="w-11 h-11 text-white mx-auto mb-5 stroke-[1.5]"></i>
+                        <div class="font-condensed text-5xl font-extrabold text-white">1.200.619</div>
+                        <div class="w-10 h-0.5 bg-amber-400 mx-auto my-3"></div>
+                        <p class="text-sm font-semibold text-white">Hectáreas bajo conservación</p>
+                        <p class="text-xs text-stone-300 mt-1">En 2 áreas nacionales y 9 áreas municipales</p>
+                    </div>
+
+                    <div class="border border-white/20 rounded-lg p-8 text-center bg-black/20 backdrop-blur-xs">
+                        <i data-lucide="bird" class="w-11 h-11 text-white mx-auto mb-5 stroke-[1.5]"></i>
+                        <div class="font-condensed text-5xl font-extrabold text-white">+411</div>
+                        <div class="w-10 h-0.5 bg-amber-400 mx-auto my-3"></div>
+                        <p class="text-sm font-semibold text-white">Vertebrados documentados</p>
+                        <p class="text-xs text-stone-300 mt-1">256 en Serranía del Iñao y 155 en El Palmar</p>
+                    </div>
+
+                    <div class="border border-white/20 rounded-lg p-8 text-center bg-black/20 backdrop-blur-xs">
+                        <i data-lucide="sprout" class="w-11 h-11 text-white mx-auto mb-5 stroke-[1.5]"></i>
+                        <div class="font-condensed text-5xl font-extrabold text-white">957+</div>
+                        <div class="w-10 h-0.5 bg-amber-400 mx-auto my-3"></div>
+                        <p class="text-sm font-semibold text-white">Especies de plantas vasculares</p>
+                        <p class="text-xs text-stone-300 mt-1">Con un estimado potencial de 2.500 especies</p>
+                    </div>
+
+                    <div class="border border-white/20 rounded-lg p-8 text-center bg-black/20 backdrop-blur-xs">
+                        <i data-lucide="compass" class="w-11 h-11 text-white mx-auto mb-5 stroke-[1.5]"></i>
+                        <div class="font-condensed text-5xl font-extrabold text-white">5</div>
+                        <div class="w-10 h-0.5 bg-amber-400 mx-auto my-3"></div>
+                        <p class="text-sm font-semibold text-white">Ecorregiones representadas</p>
+                        <p class="text-xs text-stone-300 mt-1">Valles Secos, Tucumano, Chaco Serrano, Gran Chaco y Puna</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECCIÓN DE LA RANA (Inspirada en tu captura 1: Fotografía de rana de fondo + 4 puntos numerados sobrios) -->
+        <section class="relative py-20 overflow-hidden bg-black">
+            <img src="https://images.unsplash.com/photo-1559253664-ca249d4608c6?auto=format&fit=crop&w=1920&q=85" alt="Anfibios de Chuquisaca Phyllomedusa boliviana" class="absolute inset-0 w-full h-full object-cover object-center opacity-60">
+            <div class="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-black/60"></div>
+
+            <div class="relative z-10 max-w-7xl mx-auto px-4 md:px-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <div class="lg:col-span-6 space-y-5">
+                    <h2 class="font-condensed text-4xl sm:text-6xl font-bold text-white uppercase leading-[0.95]">
+                        UN FUTURO MÁS BIODIVERSO ES POSIBLE, PERO SOLO SI ARTICULAMOS CIENCIA Y GESTIÓN AHORA.
+                    </h2>
+                    <p class="text-stone-200 text-base leading-relaxed">
+                        Nuestra hoja de ruta interinstitucional une a la <strong>Universidad San Francisco Xavier (Carrera de Biología)</strong> con los municipios, guardaparques y ONGs para proteger lugares críticos, recuperar especies endémicas y centralizar toda la información científica de Chuquisaca.
+                    </p>
+                    <p class="text-stone-300 text-sm leading-relaxed">
+                        Mediante inventarios biológicos, planes de manejo y ciencia ciudadana (iNaturalist / Great Bioblitz), transformamos datos dispersos en herramientas de toma de decisiones.
+                    </p>
+                </div>
+
+                <div class="lg:col-span-6">
+                    <div class="border border-white/20 rounded-lg p-8 bg-black/55 backdrop-blur-xs space-y-7">
+                        <div class="flex items-start space-x-4">
+                            <span class="w-7 h-7 rounded-full border border-white/40 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
+                            <div>
+                                <h4 class="text-white font-semibold text-base">Proteger y restaurar las cabeceras de cuenca y corredores biológicos.</h4>
+                                <p class="text-stone-400 text-xs mt-1">Ríos Grande, Parapetí, Azero, Río Chico y microcuencas de Huacareta, Muyupampa, Macharetí y Cintis.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <span class="w-7 h-7 rounded-full border border-white/40 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
+                            <div>
+                                <h4 class="text-white font-semibold text-base">Conservar las especies endémicas y amenazadas de Chuquisaca.</h4>
+                                <p class="text-stone-400 text-xs mt-1">Palmera Janchi coco, Paraba Frente Roja, Oso Jucumari, Jaguar, Gato Andino y Guanaco Chaqueño/Altoandino.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <span class="w-7 h-7 rounded-full border border-white/40 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>
+                            <div>
+                                <h4 class="text-white font-semibold text-base">Respaldar a los guardaparques, comités de gestión y comunidades.</h4>
+                                <p class="text-stone-400 text-xs mt-1">Gestión compartida con comunidades campesinas, Yampará y Nación Guaraní (Tentayapi e Itikaraparirenda).</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <span class="w-7 h-7 rounded-full border border-white/40 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">4</span>
+                            <div>
+                                <h4 class="text-white font-semibold text-base">Abrir el repositorio científico y normativo a investigadores y estudiantes.</h4>
+                                <p class="text-stone-400 text-xs mt-1">Acceso monitoreado a Ordenanzas, Planes de Manejo, Tesis de Licenciatura y Pósters de Congresos.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RED DE LAS OTRAS 8 ÁREAS PROTEGIDAS MUNICIPALES (Tarjetas cuadradas con foto completa de fondo estilo NPS captura 4) -->
+        <section id="directorio-municipal" class="py-20 max-w-7xl mx-auto px-4 md:px-10">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 border-b border-stone-300 pb-6">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-[0.2em] text-amber-800 block mb-1">Atlas de Áreas Protegidas Municipales (MMAyA)</span>
+                    <h2 class="font-condensed text-4xl md:text-5xl font-extrabold text-stone-900 uppercase">
+                        Explora las otras 8 Áreas Municipales del Chaco y Cintis
+                    </h2>
+                </div>
+                <div class="flex flex-wrap gap-2 mt-4 md:mt-0">
+                    <button onclick="filterMunicipal('all')" class="px-4 py-2 rounded text-xs font-bold bg-stone-900 text-white transition">Todas (8)</button>
+                    <button onclick="filterMunicipal('chaco')" class="px-4 py-2 rounded text-xs font-semibold bg-stone-200 text-stone-800 hover:bg-stone-300 transition">Chaco / Huacareta / Macharetí</button>
+                    <button onclick="filterMunicipal('tucumano')" class="px-4 py-2 rounded text-xs font-semibold bg-stone-200 text-stone-800 hover:bg-stone-300 transition">Tucumano-Boliviano</button>
+                    <button onclick="filterMunicipal('puna')" class="px-4 py-2 rounded text-xs font-semibold bg-stone-200 text-stone-800 hover:bg-stone-300 transition">Puna (Villa Abecia)</button>
+                </div>
+            </div>
+
+            <!-- Grid estilo captura 4 ("Explore subjects and stories related to this park"): Foto completa y título superpuesto arriba -->
+            <div id="municipal-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5"></div>
+        </section>
+
+        <!-- CARRUSEL DE INSTITUCIONES SOBRIO -->
+        <section class="py-16 bg-stone-900 text-white border-t border-stone-800 overflow-hidden">
+            <div class="max-w-4xl mx-auto px-4 text-center mb-10">
+                <h2 class="font-condensed text-3xl sm:text-5xl font-bold uppercase tracking-wide">
+                    PLATAFORMA INTERINSTITUCIONAL DE CHUQUISACA
+                </h2>
+                <p class="text-stone-400 text-xs uppercase tracking-[0.2em] mt-2">
+                    Universidad • SERNAP • Gobiernos Autónomos Municipales • ONGs • Comités de Gestión
+                </p>
+            </div>
+
+            <div class="relative w-full overflow-hidden">
+                <div class="animate-marquee flex space-x-4 px-4">
+                    <div class="w-60 shrink-0 bg-stone-800/80 border border-stone-700 rounded p-4 text-center">
+                        <span class="text-[10px] uppercase tracking-widest text-stone-400 block">Universidad Pública</span>
+                        <span class="font-condensed text-xl font-bold text-white uppercase">USFX • Carrera de Biología</span>
+                    </div>
+                    <div class="w-60 shrink-0 bg-stone-800/80 border border-stone-700 rounded p-4 text-center">
+                        <span class="text-[10px] uppercase tracking-widest text-stone-400 block">Nivel Nacional</span>
+                        <span class="font-condensed text-xl font-bold text-white uppercase">SERNAP Bolivia</span>
+                    </div>
+                    <div class="w-60 shrink-0 bg-stone-800/80 border border-stone-700 rounded p-4 text-center">
+                        <span class="text-[10px] uppercase tracking-widest text-stone-400 block">Distrito 7 Sucre</span>
+                        <span class="font-condensed text-xl font-bold text-white uppercase">G.A.M. Sucre & Monte Willca</span>
+                    </div>
+                    <div class="w-60 shrink-0 bg-stone-800/80 border border-stone-700 rounded p-4 text-center">
+                        <span class="text-[10px] uppercase tracking-widest text-stone-400 block">ONGs & Cooperación</span>
+                        <span class="font-condensed text-xl font-bold text-white uppercase">Fundación PASOS & Heifer</span>
+                    </div>
+                    <div class="w-60 shrink-0 bg-stone-800/80 border border-stone-700 rounded p-4 text-center">
+                        <span class="text-[10px] uppercase tracking-widest text-stone-400 block">Aliado Técnico</span>
+                        <span class="font-condensed text-xl font-bold text-white uppercase">Conservación Internacional</span>
+                    </div>
+                    <div class="w-60 shrink-0 bg-stone-800/80 border border-stone-700 rounded p-4 text-center">
+                        <span class="text-[10px] uppercase tracking-widest text-stone-400 block">Municipios Subandinos</span>
+                        <span class="font-condensed text-xl font-bold text-white uppercase">Presto • Monteagudo • Padilla</span>
+                    </div>
+                    <div class="w-60 shrink-0 bg-stone-800/80 border border-stone-700 rounded p-4 text-center">
+                        <span class="text-[10px] uppercase tracking-widest text-stone-400 block">Municipios Chaco y Cintis</span>
+                        <span class="font-condensed text-xl font-bold text-white uppercase">Huacareta • Macharetí • V. Abecia</span>
+                    </div>
+                    <!-- Duplicado para bucle -->
+                    <div class="w-60 shrink-0 bg-stone-800/80 border border-stone-700 rounded p-4 text-center">
+                        <span class="text-[10px] uppercase tracking-widest text-stone-400 block">Universidad Pública</span>
+                        <span class="font-condensed text-xl font-bold text-white uppercase">USFX • Carrera de Biología</span>
+                    </div>
+                    <div class="w-60 shrink-0 bg-stone-800/80 border border-stone-700 rounded p-4 text-center">
+                        <span class="text-[10px] uppercase tracking-widest text-stone-400 block">Nivel Nacional</span>
+                        <span class="font-condensed text-xl font-bold text-white uppercase">SERNAP Bolivia</span>
+                    </div>
+                    <div class="w-60 shrink-0 bg-stone-800/80 border border-stone-700 rounded p-4 text-center">
+                        <span class="text-[10px] uppercase tracking-widest text-stone-400 block">Distrito 7 Sucre</span>
+                        <span class="font-condensed text-xl font-bold text-white uppercase">G.A.M. Sucre & Monte Willca</span>
+                    </div>
+                    <div class="w-60 shrink-0 bg-stone-800/80 border border-stone-700 rounded p-4 text-center">
+                        <span class="text-[10px] uppercase tracking-widest text-stone-400 block">ONGs & Cooperación</span>
+                        <span class="font-condensed text-xl font-bold text-white uppercase">Fundación PASOS & Heifer</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MOSAICO DE 4 FOTOS INFERIORES ESTILO YELLOWSTONE NPS (Captura 2) -->
+        <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 h-auto lg:h-[400px]">
+            <div onclick="openAreaPage('palmar', 'especies')" class="mosaic-tile h-80 lg:h-full cursor-pointer">
+                <img src="https://images.unsplash.com/photo-1534567153574-2b12153a87f0?auto=format&fit=crop&w=800&q=80" alt="Fauna Silvestre" class="w-full h-full object-cover">
+                <div class="absolute bottom-5 left-5">
+                    <span class="bg-black/75 text-white font-bold text-base px-3.5 py-1.5 inline-block">
+                        Conteo de Especies & iNaturalist
+                    </span>
+                </div>
+            </div>
+            <div onclick="openAreaPage('inao', 'inicio')" class="mosaic-tile h-80 lg:h-full cursor-pointer">
+                <img src="https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=80" alt="Ecorregiones" class="w-full h-full object-cover">
+                <div class="absolute bottom-5 left-5">
+                    <span class="bg-black/75 text-white font-bold text-base px-3.5 py-1.5 inline-block">
+                        Ecorregiones & Mapas
+                    </span>
+                </div>
+            </div>
+            <div onclick="openAreaPage('willca', 'reglamentacion')" class="mosaic-tile h-80 lg:h-full cursor-pointer">
+                <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80" alt="Gestión y Planes de Manejo" class="w-full h-full object-cover">
+                <div class="absolute bottom-5 left-5">
+                    <span class="bg-black/75 text-white font-bold text-base px-3.5 py-1.5 inline-block">
+                        Leyes y Planes de Manejo
+                    </span>
+                </div>
+            </div>
+            <div onclick="openAreaPage('willca', 'turismo')" class="mosaic-tile h-80 lg:h-full cursor-pointer">
+                <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80" alt="Atractivos Turísticos" class="w-full h-full object-cover">
+                <div class="absolute bottom-5 left-5">
+                    <span class="bg-black/75 text-white font-bold text-base px-3.5 py-1.5 inline-block">
+                        Atractivos Turísticos
+                    </span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ========================================================== -->
+    <!-- VISTA 2: PÁGINA INTERNA DE CADA ÁREA PROTEGIDA             -->
+    <!-- ========================================================== -->
+    <section id="area-detail-view" class="hidden min-h-screen pb-24 bg-[#f4f3ee]">
+
+        <!-- HERO FOTOGRÁFICO DEL ÁREA PROTEGIDA -->
+        <div class="relative min-h-[52vh] flex items-end overflow-hidden">
+            <img id="area-hero-img" src="" alt="Portada Área Protegida" class="absolute inset-0 w-full h-full object-cover">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/45 to-black/15"></div>
+
+            <div class="relative z-10 max-w-7xl mx-auto px-4 md:px-10 py-12 w-full">
+                <button onclick="showMainPortal()" class="inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-wider text-white bg-black/60 hover:bg-black px-4 py-2 rounded mb-6 transition border border-white/20">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    <span>Volver al Portal General</span>
+                </button>
+
+                <div class="flex flex-wrap items-center gap-2 mb-2">
+                    <span id="area-badge-cat" class="px-3 py-1 rounded bg-white text-stone-950 text-xs font-bold uppercase tracking-wider"></span>
+                    <span id="area-badge-law" class="px-3 py-1 rounded bg-black/60 text-white border border-white/25 text-xs font-medium"></span>
+                    <span id="area-badge-ecoregion" class="px-3 py-1 rounded bg-black/60 text-stone-200 border border-white/20 text-xs"></span>
+                </div>
+
+                <h1 id="area-title" class="font-condensed text-5xl sm:text-7xl font-extrabold text-white uppercase tracking-tight leading-none mb-3"></h1>
+                <p id="area-subtitle" class="text-stone-200 text-base md:text-lg max-w-3xl leading-relaxed"></p>
+            </div>
+        </div>
+
+        <!-- BARRA DE ENCABEZADOS / SUBPÁGINAS DE CADA ÁREA PROTEGIDA -->
+        <div class="sticky top-20 z-30 bg-white border-b border-stone-300 shadow-xs">
+            <div class="max-w-7xl mx-auto px-4 md:px-10 flex items-center overflow-x-auto no-scrollbar">
+                <button onclick="switchSubtab('inicio')" id="subtab-btn-inicio" class="subtab-btn shrink-0 px-5 py-4 text-xs sm:text-sm font-bold border-b-2 transition">
+                    1. Inicio, Mapas & Resumen
+                </button>
+                <button onclick="switchSubtab('especies')" id="subtab-btn-especies" class="subtab-btn shrink-0 px-5 py-4 text-xs sm:text-sm font-bold border-b-2 transition">
+                    2. Especies & iNaturalist
+                </button>
+                <button onclick="switchSubtab('reglamentacion')" id="subtab-btn-reglamentacion" class="subtab-btn shrink-0 px-5 py-4 text-xs sm:text-sm font-bold border-b-2 transition">
+                    3. Reglamentación & PDFs
+                </button>
+                <button onclick="switchSubtab('turismo')" id="subtab-btn-turismo" class="subtab-btn shrink-0 px-5 py-4 text-xs sm:text-sm font-bold border-b-2 transition">
+                    4. Atractivos Turísticos
+                </button>
+                <button onclick="switchSubtab('investigacion')" id="subtab-btn-investigacion" class="subtab-btn shrink-0 px-5 py-4 text-xs sm:text-sm font-bold border-b-2 transition">
+                    5. Investigación Científica (USFX)
+                </button>
+                <button onclick="switchSubtab('proyectos')" id="subtab-btn-proyectos" class="subtab-btn shrink-0 px-5 py-4 text-xs sm:text-sm font-bold border-b-2 transition">
+                    6. Proyectos & Gestión
+                </button>
+            </div>
+        </div>
+
+        <!-- CONTENEDOR CENTRAL DE SUBPÁGINAS -->
+        <div class="max-w-7xl mx-auto px-4 md:px-10 pt-12">
+
+            <!-- SUBPÁGINA 1: INICIO (Resultados estilo NatGeo, Extensión, Municipios, Comunidades, Mapas y Mosaico de Fotos) -->
+            <div id="subtab-inicio" class="subtab-content space-y-14">
+
+                <!-- Banda de Resultados sobre Fotografía (Estilo NatGeo Pristine Seas captura 7) -->
+                <div class="relative rounded-lg overflow-hidden">
+                    <img id="area-stats-bg" src="" alt="Fondo Resultados" class="absolute inset-0 w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-stone-950/80"></div>
+                    <div id="area-stats-bar" class="relative z-10 grid grid-cols-2 lg:grid-cols-4 gap-6 p-8 sm:p-10 text-center"></div>
+                </div>
+
+                <!-- Información General + Extensión, Municipios y Comunidades -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    <div class="lg:col-span-7 bg-white rounded-lg p-8 border border-stone-200 space-y-6">
+                        <span class="text-xs font-bold uppercase tracking-widest accent-text block">Panorama General del Área</span>
+                        <h3 class="font-condensed text-3xl sm:text-4xl font-bold text-stone-900 uppercase">Importancia Biológica y Objetivos de Creación</h3>
+                        <p id="area-overview-text" class="text-stone-700 leading-relaxed text-sm sm:text-base"></p>
+                        <div class="pt-2">
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-stone-500 mb-3">Objetivos Oficiales (Base Legal y Plan de Manejo):</h4>
+                            <ul id="area-objectives-list" class="space-y-2.5 text-sm text-stone-700"></ul>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-5 bg-white rounded-lg p-8 border border-stone-200 space-y-5">
+                        <span class="text-xs font-bold uppercase tracking-widest accent-text block">Síntesis Territorial</span>
+                        <h3 class="font-condensed text-3xl font-bold text-stone-900 uppercase">Extensión, Municipios y Comunidades</h3>
+                        <div id="area-territory-meta" class="space-y-4 text-sm"></div>
+                    </div>
+                </div>
+
+                <!-- Visor de Mapas Oficiales (Zonificación, Ecorregiones, Hidrografía) -->
+                <div class="bg-white rounded-lg p-8 border border-stone-200">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b border-stone-200">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-widest accent-text">Cartografía SERNAP / IGM / USFX</span>
+                            <h3 class="font-condensed text-3xl font-bold text-stone-900 uppercase">Mapas Temáticos y Zonificación</h3>
+                        </div>
+                        <div class="flex flex-wrap gap-2" id="map-layer-buttons"></div>
+                    </div>
+                    <div id="map-layer-display" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center"></div>
+                </div>
+
+                <!-- Mosaico de Espacios Fotográficos del Área -->
+                <div>
+                    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-6">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-widest accent-text">Fotografía Documental</span>
+                            <h3 class="font-condensed text-3xl font-bold text-stone-900 uppercase">Paisajes, Hábitats y Trabajo de Campo</h3>
+                        </div>
+                        <span class="text-xs text-stone-500">Mosaico amplio con texto superpuesto sobre las fotografías</span>
+                    </div>
+                    <div id="area-photo-mosaic" class="grid grid-cols-1 md:grid-cols-3 gap-5"></div>
+                </div>
+
+                <!-- Resumen Rápido de Atractivos, Reglamentación e Investigación en el Inicio -->
+                <div>
+                    <h3 class="font-condensed text-2xl font-bold text-stone-900 uppercase mb-4">Explorar Secciones del Área Protegida</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                        <div onclick="switchSubtab('turismo')" class="mosaic-tile h-64 rounded-lg cursor-pointer group">
+                            <img id="quick-img-turismo" src="" class="w-full h-full object-cover" alt="Atractivos">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-6 flex flex-col justify-end">
+                                <span class="text-[11px] font-bold uppercase tracking-widest text-amber-300">Subpágina 4</span>
+                                <h4 class="font-condensed text-2xl font-bold text-white uppercase">Atractivos Turísticos</h4>
+                                <p id="quick-turismo-summary" class="text-xs text-stone-200 mt-1 line-clamp-2"></p>
+                            </div>
+                        </div>
+
+                        <div onclick="switchSubtab('reglamentacion')" class="mosaic-tile h-64 rounded-lg cursor-pointer group">
+                            <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" alt="Reglamentación">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-6 flex flex-col justify-end">
+                                <span class="text-[11px] font-bold uppercase tracking-widest text-amber-300">Subpágina 3</span>
+                                <h4 class="font-condensed text-2xl font-bold text-white uppercase">Reglamentación & PDFs</h4>
+                                <p id="quick-legal-summary" class="text-xs text-stone-200 mt-1 line-clamp-2"></p>
+                            </div>
+                        </div>
+
+                        <div onclick="switchSubtab('investigacion')" class="mosaic-tile h-64 rounded-lg cursor-pointer group">
+                            <img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover" alt="Investigación">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent p-6 flex flex-col justify-end">
+                                <span class="text-[11px] font-bold uppercase tracking-widest text-amber-300">Subpágina 5</span>
+                                <h4 class="font-condensed text-2xl font-bold text-white uppercase">Investigación Científica</h4>
+                                <p id="quick-science-summary" class="text-xs text-stone-200 mt-1 line-clamp-2"></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUBPÁGINA 2: CONTEO DE ESPECIES + ESPACIO iNATURALIST -->
+            <div id="subtab-especies" class="subtab-content hidden space-y-12">
+
+                <!-- Conteo Interactivo -->
+                <div class="bg-white rounded-lg p-8 border border-stone-200">
+                    <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 pb-6 border-b border-stone-200">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-widest accent-text">Riqueza Taxonómica • UICN / Libro Rojo de Bolivia / CITES</span>
+                            <h3 class="font-condensed text-4xl font-bold text-stone-900 uppercase mt-1">Conteo de Especies de Flora y Fauna</h3>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="filterSpeciesGroup('all')" class="sp-filter-btn px-4 py-2 rounded text-xs font-bold bg-stone-900 text-white">Todas</button>
+                            <button onclick="filterSpeciesGroup('Flora')" class="sp-filter-btn px-4 py-2 rounded text-xs font-semibold bg-stone-100 text-stone-800 hover:bg-stone-200">Flora</button>
+                            <button onclick="filterSpeciesGroup('Mamíferos')" class="sp-filter-btn px-4 py-2 rounded text-xs font-semibold bg-stone-100 text-stone-800 hover:bg-stone-200">Mamíferos</button>
+                            <button onclick="filterSpeciesGroup('Aves')" class="sp-filter-btn px-4 py-2 rounded text-xs font-semibold bg-stone-100 text-stone-800 hover:bg-stone-200">Aves</button>
+                            <button onclick="filterSpeciesGroup('Herpeto')" class="sp-filter-btn px-4 py-2 rounded text-xs font-semibold bg-stone-100 text-stone-800 hover:bg-stone-200">Anfibios y Reptiles</button>
+                            <button onclick="filterSpeciesGroup('Peces')" class="sp-filter-btn px-4 py-2 rounded text-xs font-semibold bg-stone-100 text-stone-800 hover:bg-stone-200">Peces / Invertebrados</button>
+                        </div>
+                    </div>
+
+                    <!-- Resumen Numérico por Grupo -->
+                    <div id="taxonomic-bars" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-8"></div>
+
+                    <!-- Tabla / Lista limpia de especies emblemáticas (sin exceso de minitarjetas) -->
+                    <div class="overflow-x-auto border border-stone-200 rounded">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-stone-100 text-stone-600 text-xs uppercase tracking-wider border-b border-stone-200">
+                                    <th class="py-3.5 px-4 font-bold">Grupo</th>
+                                    <th class="py-3.5 px-4 font-bold">Nombre Común</th>
+                                    <th class="py-3.5 px-4 font-bold">Nombre Científico</th>
+                                    <th class="py-3.5 px-4 font-bold">Categoría Amenaza</th>
+                                    <th class="py-3.5 px-4 font-bold">Importancia y Distribución Local</th>
+                                </tr>
+                            </thead>
+                            <tbody id="species-table-body" class="divide-y divide-stone-200 text-sm"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- ESPACIO PARA PROYECTO Y OBSERVACIONES DE iNATURALIST (Por Área Protegida) -->
+                <div class="bg-white rounded-lg p-8 border border-stone-200">
+                    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-stone-200 mb-6">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-12 h-12 rounded bg-[#74ac00] text-white flex items-center justify-center shrink-0 font-condensed font-extrabold text-xl">
+                                iNat
+                            </div>
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-widest text-[#5a8700]">Ciencia Ciudadana & Great Bioblitz USFX</span>
+                                <h3 class="font-condensed text-3xl font-bold text-stone-900 uppercase">Observaciones y Registros en iNaturalist</h3>
+                                <p id="inat-project-desc" class="text-stone-600 text-sm mt-1"></p>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-3">
+                            <span id="inat-status-pill" class="px-3 py-1.5 rounded bg-stone-100 border border-stone-300 text-stone-700 text-xs font-semibold">
+                                Espacio reservado para ID de Proyecto iNaturalist
+                            </span>
+                            <button onclick="loadLiveINaturalist()" class="px-4 py-2 rounded bg-[#74ac00] hover:bg-[#5f8d00] text-white text-xs font-bold transition flex items-center space-x-1.5">
+                                <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+                                <span>Cargar Muestra en Vivo (API Chuquisaca)</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Contenedor de Observaciones iNaturalist / Espacio Reservado -->
+                    <div id="inat-observations-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <!-- Se llena por defecto con los slots listos para el proyecto o con la API en vivo de iNaturalist -->
+                    </div>
+
+                    <div class="mt-6 p-4 bg-stone-100 rounded border border-stone-200 text-xs text-stone-600 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <span><strong>Nota para cuando crees los proyectos en iNaturalist:</strong> Solo debes colocar el <em>slug</em> o ID del proyecto (ej. <code>anmi-el-palmar-chuquisaca</code>) en la variable <code>inatProjectSlug</code> de este archivo para que cargue automáticamente las fotos de los estudiantes y guardaparques.</span>
+                        <a href="https://www.inaturalist.org" target="_blank" rel="noopener noreferrer" class="text-[#5a8700] font-bold hover:underline shrink-0">Ir a iNaturalist.org →</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SUBPÁGINA 3: REGLAMENTACIÓN, LEYES Y PLANES DE MANEJO (CON REGISTRO PREVIO DE DESCARGA) -->
+            <div id="subtab-reglamentacion" class="subtab-content hidden space-y-8">
+                <div class="bg-white rounded-lg p-8 border border-stone-200">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-stone-200 pb-6 mb-8">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-widest accent-text">Repositorio Normativo con Monitoreo de Descargas</span>
+                            <h3 class="font-condensed text-4xl font-bold text-stone-900 uppercase mt-1">Ordenanzas, Leyes de Creación y Planes de Manejo (PDF)</h3>
+                            <p class="text-stone-600 text-sm mt-1">Al solicitar cualquier PDF, el sistema registra los datos del solicitante (Nombre, Institución, Correo y Motivo) para fines estadísticos de la Plataforma.</p>
+                        </div>
+                        <button onclick="openDownloadLogModal()" class="shrink-0 px-4 py-2.5 rounded bg-stone-100 hover:bg-stone-200 text-stone-800 font-bold text-xs border border-stone-300 flex items-center space-x-2">
+                            <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
+                            <span>Ver Registro de Quiénes Descargaron</span>
+                        </button>
+                    </div>
+
+                    <div id="legal-docs-container" class="divide-y divide-stone-200 border border-stone-200 rounded"></div>
+                </div>
+            </div>
+
+            <!-- SUBPÁGINA 4: ATRACTIVOS TURÍSTICOS EN MOSAICO FOTOGRÁFICO AMPLIO Y CUADRADO -->
+            <div id="subtab-turismo" class="subtab-content hidden space-y-8">
+                <div class="bg-white rounded-lg p-8 border border-stone-200">
+                    <div class="mb-8">
+                        <span class="text-xs font-bold uppercase tracking-widest accent-text">Patrimonio Escénico, Cultural y Rutas de Campo</span>
+                        <h3 class="font-condensed text-4xl font-bold text-stone-900 uppercase mt-1">Mosaico de Atractivos Turísticos</h3>
+                        <p id="turismo-intro-text" class="text-stone-600 text-sm mt-1 max-w-3xl"></p>
+                    </div>
+
+                    <!-- Mosaico Fotográfico de Atractivos (Sin tarjetas pequeñas sin foto) -->
+                    <div id="tourism-cards-container" class="grid grid-cols-1 md:grid-cols-12 gap-5"></div>
+                </div>
+            </div>
+
+            <!-- SUBPÁGINA 5: INVESTIGACIÓN CIENTÍFICA (TESIS, PÓSTERS EN CONGRESOS, ARTÍCULOS USFX) -->
+            <div id="subtab-investigacion" class="subtab-content hidden space-y-8">
+                <div class="bg-white rounded-lg p-8 border border-stone-200">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-stone-200 pb-6 mb-8">
+                        <div>
+                            <span class="text-xs font-bold uppercase tracking-widest accent-text">Producción Científica • Carrera de Biología USFX</span>
+                            <h3 class="font-condensed text-4xl font-bold text-stone-900 uppercase mt-1">Tesis de Grado, Pósters en Congresos y Diagnósticos</h3>
+                            <p class="text-stone-600 text-sm mt-1">Cada documento científico cuenta con descarga monitoreada para conocer el impacto académico de las investigaciones.</p>
+                        </div>
+                        <button onclick="openJoinModal('Subir Nueva Tesis o Póster Científico')" class="shrink-0 px-5 py-3 rounded bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs uppercase tracking-wider flex items-center space-x-2">
+                            <i data-lucide="file-plus-2" class="w-4 h-4"></i>
+                            <span>Registrar Tesis / Póster</span>
+                        </button>
+                    </div>
+
+                    <div id="research-cards-container" class="space-y-4"></div>
+                </div>
+            </div>
+
+            <!-- SUBPÁGINA 6: PROYECTOS Y PROGRAMAS DE MANEJO -->
+            <div id="subtab-proyectos" class="subtab-content hidden space-y-8">
+                <div class="bg-white rounded-lg p-8 border border-stone-200">
+                    <span class="text-xs font-bold uppercase tracking-widest accent-text">Gestión Compartida & Cooperación</span>
+                    <h3 class="font-condensed text-4xl font-bold text-stone-900 uppercase mt-1 mb-2">Programas y Proyectos Priorizados</h3>
+                    <p class="text-stone-600 text-sm mb-8 max-w-3xl">Líneas de acción de los Planes de Manejo para articular financiamiento con municipios, ONGs y cooperación internacional.</p>
+
+                    <div id="projects-cards-container" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- MODAL DE SOLICITUD Y MONITOREO ANTES DE DESCARGAR CUALQUIER PDF           -->
+    <!-- ========================================================================= -->
+    <div id="pdf-gate-modal" class="fixed inset-0 z-50 hidden bg-black/75 backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="bg-white max-w-lg w-full rounded-lg border border-stone-300 overflow-hidden shadow-2xl">
+            <div class="bg-stone-900 text-white p-6 flex justify-between items-start">
+                <div>
+                    <span class="text-[11px] font-bold uppercase tracking-widest text-amber-400 block">Registro de Acceso Documental • USFX</span>
+                    <h3 class="font-condensed text-2xl font-bold uppercase mt-1" id="gate-doc-title">Descargar Documento PDF</h3>
+                </div>
+                <button onclick="closePdfGateModal()" class="text-stone-400 hover:text-white">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <form onsubmit="confirmAndDownloadPdf(event)" class="p-6 space-y-4 text-sm text-stone-800">
+                <p class="text-xs text-stone-600 leading-relaxed bg-stone-100 p-3 rounded border border-stone-200">
+                    Para fines de monitoreo de impacto de la <strong>Plataforma de Áreas Protegidas de Chuquisaca</strong>, por favor registra tus datos antes de iniciar la visualización o descarga del PDF.
+                </p>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-stone-700 mb-1">Nombre Completo / Autor o Solicitante *</label>
+                    <input type="text" id="req-name" required placeholder="Ej. Lic. María Vargas / Est. Carlos Mamani" class="w-full bg-white border border-stone-300 rounded px-3.5 py-2.5 text-stone-900 focus:outline-none focus:border-stone-900">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-stone-700 mb-1">Institución / Universidad / Comunidad *</label>
+                        <input type="text" id="req-inst" required placeholder="Ej. USFX Biología / SERNAP / ONG / Independiente" class="w-full bg-white border border-stone-300 rounded px-3.5 py-2.5 text-stone-900 focus:outline-none focus:border-stone-900">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-stone-700 mb-1">Correo Electrónico *</label>
+                        <input type="email" id="req-email" required placeholder="correo@ejemplo.com" class="w-full bg-white border border-stone-300 rounded px-3.5 py-2.5 text-stone-900 focus:outline-none focus:border-stone-900">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-stone-700 mb-1">Motivo de la Descarga o Consulta *</label>
+                    <select id="req-reason" required class="w-full bg-white border border-stone-300 rounded px-3.5 py-2.5 text-stone-900 focus:outline-none focus:border-stone-900">
+                        <option value="Solo lectura / Ver nomás">Solo lectura / Ver nomás (Consulta general)</option>
+                        <option value="Investigación científica / Tesis">Investigación científica / Elaboración de Tesis</option>
+                        <option value="Consulta de Ley / Normativa municipal o nacional">Consulta de Ley / Ordenanza / Normativa</option>
+                        <option value="Formulación de Proyecto / ONG / Gestión Municipal">Formulación de Proyecto / ONG / Gestión Municipal</option>
+                        <option value="Educación ambiental / Docencia universitaria">Educación ambiental / Docencia universitaria</option>
+                    </select>
+                </div>
+
+                <div id="gate-success-box" class="hidden p-3.5 rounded bg-lime-50 border border-lime-600 text-lime-900 text-xs space-y-2">
+                    <div class="font-bold">✓ ¡Solicitud registrada en el historial de monitoreo!</div>
+                    <p id="gate-file-note"></p>
+                </div>
+
+                <div class="pt-3 flex justify-end space-x-3 border-t border-stone-200">
+                    <button type="button" onclick="closePdfGateModal()" class="px-4 py-2.5 rounded bg-stone-200 text-stone-800 font-semibold text-xs">Cancelar</button>
+                    <button type="submit" id="gate-submit-btn" class="px-6 py-2.5 rounded bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs flex items-center space-x-2">
+                        <i data-lucide="download" class="w-4 h-4"></i>
+                        <span>Registrar y Descargar / Ver PDF</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL HISTORIAL DE MONITOREO DE DESCARGAS (PARA EL ADMINISTRADOR USFX) -->
+    <div id="download-log-modal" class="fixed inset-0 z-50 hidden bg-black/75 backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="bg-white max-w-4xl w-full rounded-lg border border-stone-300 overflow-hidden shadow-2xl max-h-[88vh] flex flex-col">
+            <div class="bg-stone-900 text-white p-6 flex justify-between items-center">
+                <div>
+                    <span class="text-[11px] font-bold uppercase tracking-widest text-amber-400 block">Panel de Monitoreo USFX</span>
+                    <h3 class="font-condensed text-2xl font-bold uppercase">Registro de Solicitantes y Descargas de PDFs</h3>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button onclick="exportDownloadLogCSV()" class="px-3.5 py-1.5 rounded bg-amber-400 text-stone-950 font-bold text-xs flex items-center space-x-1.5">
+                        <i data-lucide="file-spreadsheet" class="w-4 h-4"></i>
+                        <span>Exportar a Excel (CSV)</span>
+                    </button>
+                    <button onclick="closeDownloadLogModal()" class="text-stone-400 hover:text-white">
+                        <i data-lucide="x" class="w-5 h-5"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="p-6 overflow-y-auto">
+                <div class="overflow-x-auto border border-stone-200 rounded">
+                    <table class="w-full text-left border-collapse text-xs">
+                        <thead>
+                            <tr class="bg-stone-100 text-stone-700 uppercase border-b border-stone-200">
+                                <th class="py-3 px-4">Fecha / Hora</th>
+                                <th class="py-3 px-4">Documento Solicitado</th>
+                                <th class="py-3 px-4">Nombre / Solicitante</th>
+                                <th class="py-3 px-4">Institución</th>
+                                <th class="py-3 px-4">Correo</th>
+                                <th class="py-3 px-4">Motivo</th>
+                            </tr>
+                        </thead>
+                        <tbody id="download-log-tbody" class="divide-y divide-stone-200 text-stone-800"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL FICHA DE LAS 8 ÁREAS MUNICIPALES ADICIONALES -->
+    <div id="municipal-modal" class="fixed inset-0 z-50 hidden bg-black/75 backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="bg-white max-w-3xl w-full rounded-lg border border-stone-300 overflow-hidden shadow-2xl max-h-[90vh] flex flex-col">
+            <div class="bg-stone-900 text-white p-6 flex justify-between items-start">
+                <div>
+                    <span id="m-modal-badge" class="px-2.5 py-0.5 rounded bg-amber-500 text-black text-xs font-bold uppercase"></span>
+                    <h3 id="m-modal-title" class="font-condensed text-3xl font-bold uppercase mt-2"></h3>
+                    <p id="m-modal-location" class="text-stone-300 text-xs mt-1"></p>
+                </div>
+                <button onclick="closeMunicipalModal()" class="p-2 text-stone-400 hover:text-white">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="p-6 overflow-y-auto space-y-5 text-sm text-stone-800">
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-stone-100 p-4 rounded border border-stone-200">
+                    <div>
+                        <span class="text-[11px] text-stone-500 block">Base Legal</span>
+                        <span id="m-modal-law" class="font-bold text-stone-900"></span>
+                    </div>
+                    <div>
+                        <span class="text-[11px] text-stone-500 block">Superficie</span>
+                        <span id="m-modal-area" class="font-bold text-amber-800"></span>
+                    </div>
+                    <div>
+                        <span class="text-[11px] text-stone-500 block">Altitud</span>
+                        <span id="m-modal-alt" class="font-bold text-stone-900"></span>
+                    </div>
+                    <div>
+                        <span class="text-[11px] text-stone-500 block">Ecorregión</span>
+                        <span id="m-modal-eco" class="font-bold text-stone-900"></span>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-stone-900 font-bold uppercase tracking-wider text-xs mb-1">Importancia Hídrica, Ecológica y Cultural</h4>
+                    <p id="m-modal-desc" class="leading-relaxed text-stone-700"></p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="bg-stone-50 p-4 rounded border border-stone-200">
+                        <h4 class="text-amber-900 font-bold uppercase tracking-wider text-xs mb-1">Fauna Relevante</h4>
+                        <p id="m-modal-fauna" class="text-xs leading-relaxed text-stone-700"></p>
+                    </div>
+                    <div class="bg-stone-50 p-4 rounded border border-stone-200">
+                        <h4 class="text-lime-900 font-bold uppercase tracking-wider text-xs mb-1">Flora Relevante</h4>
+                        <p id="m-modal-flora" class="text-xs leading-relaxed text-stone-700"></p>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-stone-900 font-bold uppercase tracking-wider text-xs mb-1">Objetivos de Creación (Atlas MMAyA)</h4>
+                    <p id="m-modal-obj" class="text-xs text-stone-600 leading-relaxed"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL PARA SUBIR TESIS / UNIRSE -->
+    <div id="join-modal" class="fixed inset-0 z-50 hidden bg-black/75 backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="bg-white max-w-xl w-full rounded-lg border border-stone-300 p-6 sm:p-8 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-stone-200 pb-4 mb-5">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-stone-500">Plataforma Colaborativa USFX</span>
+                    <h3 id="join-modal-title" class="font-condensed text-3xl font-bold text-stone-900 uppercase">Sumar Institución o Subir Investigación</h3>
+                </div>
+                <button onclick="closeJoinModal()" class="text-stone-500 hover:text-stone-900">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <form onsubmit="handleFormSubmit(event)" class="space-y-4 text-sm text-stone-800">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-stone-700 mb-1">Tipo de Aporte</label>
+                    <select class="w-full bg-white border border-stone-300 rounded px-3.5 py-2.5 text-stone-900">
+                        <option>Tesis de Licenciatura / Postgrado (PDF)</option>
+                        <option>Póster Científico en Congreso (PDF)</option>
+                        <option>Ordenanza Municipal / Plan de Manejo / Reglamento (PDF)</option>
+                        <option>Adhesión Institucional (ONG, Municipio, Comité de Gestión)</option>
+                    </select>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-stone-700 mb-1">Área Protegida</label>
+                        <select class="w-full bg-white border border-stone-300 rounded px-3.5 py-2.5 text-stone-900">
+                            <option>ANMI El Palmar</option>
+                            <option>PN-ANMI Serranía del Iñao</option>
+                            <option>APM ANMI Monte Willca</option>
+                            <option>Otra Área Municipal de Chuquisaca</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-stone-700 mb-1">Autor / Institución</label>
+                        <input type="text" required placeholder="Nombre y afiliación" class="w-full bg-white border border-stone-300 rounded px-3.5 py-2.5 text-stone-900">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-stone-700 mb-1">Título del Documento o Proyecto</label>
+                    <input type="text" required placeholder="Título completo" class="w-full bg-white border border-stone-300 rounded px-3.5 py-2.5 text-stone-900">
+                </div>
+                <div id="form-feedback" class="hidden p-3 rounded bg-lime-100 border border-lime-600 text-lime-900 text-xs font-semibold">
+                    ✓ Solicitud registrada correctamente.
+                </div>
+                <div class="pt-2 flex justify-end space-x-3">
+                    <button type="button" onclick="closeJoinModal()" class="px-4 py-2 rounded bg-stone-200 text-stone-800 font-semibold text-xs">Cerrar</button>
+                    <button type="submit" class="px-6 py-2 rounded bg-stone-900 text-white font-bold text-xs">Enviar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL EXPLICATIVO: ¿CÓMO SUBIR LOS PDFs EN WORDPRESS? -->
+    <div id="wp-modal" class="fixed inset-0 z-50 hidden bg-black/75 backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="bg-white max-w-2xl w-full rounded-lg border border-stone-300 p-6 sm:p-8 shadow-2xl space-y-4 text-stone-800">
+            <div class="flex justify-between items-center border-b border-stone-200 pb-4">
+                <h3 class="font-condensed text-2xl font-bold uppercase text-stone-900">¿Cómo se cargan los PDFs y Fotos en el WordPress de la USFX?</h3>
+                <button onclick="closeWPModal()" class="text-stone-500 hover:text-stone-900">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="space-y-3 text-sm leading-relaxed">
+                <p>No necesitas cargarme todos los PDFs pesados aquí para que funcionen en tu servidor universitario; el flujo en WordPress es súper directo:</p>
+                <ol class="list-decimal list-inside space-y-2 text-xs sm:text-sm bg-stone-100 p-4 rounded border border-stone-200">
+                    <li><strong>Sube tus PDFs a WordPress o Google Drive:</strong> En el panel de WordPress de la Carrera de Biología entra a <em>Medios → Añadir nuevo</em> y sube la Ordenanza Municipal 012/2012, el Plan de Manejo de El Palmar, el del Iñao o las Tesis. WordPress te dará un enlace directo (ej. <code>https://biologia.usfx.bo/wp-content/uploads/2026/plan-palmar.pdf</code>).</li>
+                    <li><strong>Pega ese enlace en la propiedad <code>fileUrl</code> de cada documento:</strong> En el código de abajo verás que cada documento tiene <code>fileUrl: '#'</code>. Al poner ahí el enlace de tu PDF, el sistema primero pedirá al visitante su <strong>Nombre, Institución, Correo y Motivo</strong> y automáticamente le abrirá o descargará el PDF real.</li>
+                    <li><strong>Conectar el registro de descargas a tu correo o Google Sheets:</strong> Actualmente el historial se guarda en el navegador y se puede exportar a Excel (CSV) desde el botón superior <em>"Monitoreo de Descargas"</em>. Además, puedes pegar un Webhook de Google Forms / Contact Form 7 para que cada descarga llegue directo a tu correo.</li>
+                </ol>
+            </div>
+            <div class="flex justify-end">
+                <button onclick="closeWPModal()" class="px-6 py-2 rounded bg-stone-900 text-white font-bold text-xs">Entendido</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER SOBRIO ESTILO SERVICIO DE PARQUES NACIONALES (NPS) -->
+    <footer class="bg-[#181a17] text-stone-400 text-xs py-14 border-t border-stone-800">
+        <div class="max-w-7xl mx-auto px-4 md:px-10 grid grid-cols-1 md:grid-cols-3 gap-10">
+            <div>
+                <h4 class="text-white font-bold uppercase tracking-[0.2em] mb-3">INFORMACIÓN DE CONTACTO</h4>
+                <p class="text-stone-200 font-semibold mb-1">Universidad Mayor, Real y Pontificia de San Francisco Xavier de Chuquisaca (USFX)</p>
+                <p>Facultad de Ciencias Químico-Farmacéuticas y Bioquímicas • Carrera de Biología</p>
+                <p class="mt-2">Plataforma de Áreas Protegidas de Chuquisaca</p>
+                <p class="mt-1 text-stone-300">Sucre, Chuquisaca - Bolivia</p>
+            </div>
+            <div>
+                <h4 class="text-white font-bold uppercase tracking-[0.2em] mb-3">ACCESOS RÁPIDOS</h4>
+                <ul class="space-y-2">
+                    <li><button onclick="openAreaPage('palmar', 'reglamentacion')" class="hover:text-white transition">→ Plan de Manejo y D.S. 24623 ANMI El Palmar</button></li>
+                    <li><button onclick="openAreaPage('inao', 'reglamentacion')" class="hover:text-white transition">→ Plan de Manejo y Ley 2727 Serranía del Iñao</button></li>
+                    <li><button onclick="openAreaPage('willca', 'reglamentacion')" class="hover:text-white transition">→ Ordenanza Municipal N° 012/2012 Monte Willca</button></li>
+                    <li><button onclick="openDownloadLogModal()" class="hover:text-white transition">→ Monitoreo de Descargas Documentales</button></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-white font-bold uppercase tracking-[0.2em] mb-3">CIENCIA Y CONSERVACIÓN</h4>
+                <p class="mb-4 leading-relaxed">Espacio colaborativo abierto a investigadores, tesistas, guardaparques, municipios y ONGs que trabajan en las ecorregiones de Chuquisaca.</p>
+                <button onclick="openJoinModal()" class="px-5 py-2.5 rounded bg-stone-800 hover:bg-stone-700 text-white font-semibold border border-stone-700 transition">
+                    Vincular Institución o Subir Tesis
+                </button>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ========================================================================= -->
+    <!-- BASE DE DATOS Y LÓGICA COMPLETA                                           -->
+    <!-- ========================================================================= -->
+    <script>
+        // HISTORIAL DE DESCARGAS DE PDFs (Con registros iniciales de ejemplo + nuevas descargas)
+        let pdfDownloadLogs = [
+            { date: '2026-11-12 10:15', doc: 'Plan de Manejo ANMI El Palmar (2014-2023)', name: 'Univ. Daniela Flores', inst: 'Carrera de Biología - USFX', email: 'dflores@usfx.bo', reason: 'Investigación científica / Tesis' },
+            { date: '2026-11-13 16:40', doc: 'Ordenanza Autonómica Municipal N° 012/2012 - Monte Willca', name: 'Ing. Marco Zárate', inst: 'G.A.M. Sucre - Medio Ambiente', email: 'mzarate@sucre.bo', reason: 'Consulta de Ley / Normativa municipal o nacional' },
+            { date: '2026-11-14 09:20', doc: 'Diversidad de Mariposas (Lepidoptera) en Monte Willca (2024)', name: 'visitante_externo', inst: 'Independiente', email: 'lectura@gmail.com', reason: 'Solo lectura / Ver nomás' }
+        ];
+        let pendingPdfDoc = null;
+
+        // 1. DATOS DE LAS 3 ÁREAS PROTEGIDAS PRINCIPALES
+        const mainAreasData = {
+            palmar: {
+                id: 'palmar',
+                name: 'ANMI El Palmar',
+                accent: '#4d7c0f', // Verde lechuga / bosque natural sobrio
+                category: 'Área Natural de Manejo Integrado • SERNAP',
+                law: 'D.S. N° 24623 (20 de mayo de 1997)',
+                ecoregions: 'Bosques Secos Interandinos • Chaco Serrano • Tucumano-Boliviano',
+                heroImg: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=1920&q=85',
+                subtitle: 'Santuario de la palmera endémica Janchi coco (Parajubaea torallyi) y el pino de monte (Podocarpus parlatorei) en el municipio de Presto, provincia Zudáñez.',
+                inatProjectSlug: 'anmi-el-palmar-chuquisaca',
+                inatCoords: { lat: -18.73, lng: -64.84, radius: 25 },
+                stats: [
+                    { num: '59.484', label: 'Hectáreas Protegidas', sub: '1.857 ha de núcleo de palmeras' },
+                    { num: '313', label: 'Especies de Flora', sub: 'En 81 familias botánicas' },
+                    { num: '155', label: 'Vertebrados Registrados', sub: '112 aves, 24 mamíferos, 18 herpeto' },
+                    { num: '10', label: 'Comunidades en Presto', sub: 'Gestión compartida local' }
+                ],
+                overview: 'El Área Natural de Manejo Integrado El Palmar protege tres pisos ecológicos entre los 1.000 y 3.200 m.s.n.m. en la Cordillera Oriental Central. Resguarda las quebradas húmedas donde habita la palmera endémica Parajubaea torallyi (Janchi coco) entre los 2.400 y 3.200 m.s.n.m., junto con asociaciones de Podocarpus parlatorei (Apéndice I CITES), quewiñas (Polylepis tomentella y P. neglecta) y valles secos interandinos.',
+                objectives: [
+                    'Protección y conservación específica de la palmera endémica Parajubaea torallyi (janchi coco) y el pino de monte (Podocarpus parlatorei, Apéndice I CITES).',
+                    'Conservación de los ecosistemas de Valles Secos Interandinos (Alnus acuminata, Polylepis spp., Neoraimondia herzogiana, Cardenasiodendron brachypterum).',
+                    'Protección de fauna amenazada: Oso Jucumari (Tremarctos ornatus), Paraba Frente Roja (Ara rubrogenys), Cóndor (Vultur gryphus) y Puma (Puma concolor).',
+                    'Regular el uso sostenible de los recursos naturales y precautelar el patrimonio arqueológico y cultural Yampará.'
+                ],
+                territoryMeta: [
+                    { label: 'Ubicación y Extensión', val: 'Provincia Zudáñez, Municipio de Presto (59.484 ha por Decreto / 60.275 ha por poligonal SIG).' },
+                    { label: 'Comunidades (10)', val: 'Rodeo El Palmar, El Palmar, Molani, La Joya Charal, Loman, Torco Torco, Trancas Horno K\'asa, San Francisco, Chajra Mayu y Aramasi.' },
+                    { label: 'Clima e Hidrografía', val: 'Templado mesotérmico (16°C a 20°C; 650 mm anuales). Cuenca del Río Grande y subcuencas de los ríos Rodeo, Presto, Rumi Cancha, Algodonal y Zudáñez.' },
+                    { label: 'Accesibilidad', val: 'Carretera Sucre – Tarabuco – Zudáñez, desvío a la localidad de Presto y camino vecinal a Rodeo.' }
+                ],
+                maps: [
+                    {
+                        title: 'Zonificación del Plan de Manejo',
+                        desc: 'Ordenamiento en 4 zonas: 1) Zona de Pastoreo Extensivo al Este (32.639 ha - 54,15%), 2) Zona de Uso Agropecuario en la cuenca del Río Rodeo (25.715 ha - 42,66%), 3) Zona de Uso Moderado / Núcleo de la Palmera Janchi Coco en El Palmar y Joya Charal (1.857 ha - 3,08%), y 4) Zona de Interés Histórico Cultural.',
+                        highlights: ['54,15% Pastoreo regulado', '42,66% Uso agropecuario', '3,08% Núcleo estricto Janchi coco']
+                    },
+                    {
+                        title: 'Mapa de Ecorregiones y Pisos Ecológicos',
+                        desc: 'Comprende Bosques Secos Interandinos, Chaco Serrano y Bosque Tucumano-Boliviano en Transición. De 1.000 a 2.000 m domina el soto y willca; de 2.000 a 2.500 m pino de monte y aliso; de 2.800 a 3.200 m sub-puna con quewiña y palmares.',
+                        highlights: ['1.000-2.000m: Valle Seco', '2.000-2.500m: Pino de monte', '2.400-3.200m: Palmares y Quewiña']
+                    },
+                    {
+                        title: 'Mapa Hidrográfico y Fisiográfico',
+                        desc: 'Serranías altas y medias con disección fuerte (Cerro Ñaunaca). Drena hacia la parte alta del Río Grande mediante los ríos Seripona, Zudáñez y Rodeo.',
+                        highlights: ['Macrocuenca del Amazonas', 'Subcuenca Río Rodeo', 'Sin contratos mineros ni petroleros']
+                    }
+                ],
+                photos: [
+                    { url: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=900&q=80', title: 'Bosque de Janchi Coco', caption: 'Palmares endémicos de Parajubaea torallyi entre 2.400 y 3.200 msnm.' },
+                    { url: 'https://images.unsplash.com/photo-1534567153574-2b12153a87f0?auto=format&fit=crop&w=900&q=80', title: 'Hábitat del Jucumari y Cóndor', caption: 'Quebradas húmedas de El Palmarcito y peñascos de Rodeo.' },
+                    { url: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=900&q=80', title: 'Serranías y Cañones de Presto', caption: 'Formaciones rocosas en K\'ala Rumi y Cañón Misión.' }
+                ],
+                quickSummaries: {
+                    turismo: 'Cascada Yana Q\'ucha (12 m), Mirador Cóndor Bañana (3.017 msnm), Cañón Misión, K\'ala Rumi y Cestería Yampará.',
+                    legal: 'Decreto Supremo N° 24623 (1997), Plan de Manejo 2014-2023 y Estatuto del Consejo de Gestión Compartida.',
+                    science: 'Inventario de 155 especies de vertebrados, estudios de Parajubaea torallyi y registros del Great Bioblitz 2024.'
+                },
+                taxonomicBreakdown: [
+                    { group: 'Aves', count: '112 spp.', pct: '72,26%' },
+                    { group: 'Mamíferos', count: '24 spp.', pct: '15,48%' },
+                    { group: 'Reptiles', count: '12 spp.', pct: '7,74%' },
+                    { group: 'Anfibios', count: '6 spp.', pct: '3,87%' },
+                    { group: 'Peces', count: '1+ spp.', pct: '0,65%' },
+                    { group: 'Flora Vascular', count: '313 spp.', pct: '81 Familias' }
+                ],
+                speciesList: [
+                    { group: 'Flora', sci: 'Parajubaea torallyi', common: 'Palmera Janchi coco', status: 'EN (En Peligro - Endémica)', note: 'Especie emblema del AP (2.400-3.200 msnm). Aprovechamiento sostenible de frutos y fibras.' },
+                    { group: 'Flora', sci: 'Podocarpus parlatorei', common: 'Pino de monte', status: 'VU / CITES Apéndice I', note: 'Conífera nativa clave de los bosques montanos entre 2.000 y 2.500 msnm.' },
+                    { group: 'Flora', sci: 'Polylepis tomentella & P. neglecta', common: 'Quewiña', status: 'EN (En Peligro)', note: 'Bosques altoandinos colectores de humedad entre 2.800 y 3.200 msnm.' },
+                    { group: 'Flora', sci: 'Myrcianthes callicoma', common: 'Arrayán', status: 'EN (En Peligro)', note: 'Myrtácea amenazada presente en quebradas húmedas.' },
+                    { group: 'Mamíferos', sci: 'Tremarctos ornatus', common: 'Jucumari / Oso Andino', status: 'VU (Vulnerable)', note: 'Habita sectores conservados como El Palmarcito, La Joya y Cañón Canal Mayu.' },
+                    { group: 'Aves', sci: 'Ara rubrogenys', common: 'Paraba Frente Roja (Kaka loro)', status: 'CR (Peligro Crítico)', note: 'Ave endémica de Bolivia; nidifica en farallones como Loro Qaqa.' },
+                    { group: 'Aves', sci: 'Oreopsar bolivianus', common: 'Tordo Boliviano', status: 'LC (Endémica de Bolivia)', note: 'Especie endémica frecuente en los valles interandinos del área.' },
+                    { group: 'Aves', sci: 'Vultur gryphus', common: 'Cóndor Andino', status: 'VU (Vulnerable)', note: 'Observado permanentemente en el mirador natural Cóndor Bañana (Rodeo).' },
+                    { group: 'Mamíferos', sci: 'Tamandua tetradactyla & Puma concolor', common: 'Oso Hormiguero y Puma', status: 'LC', note: 'Registrados en los diagnósticos de fauna del Plan de Manejo.' },
+                    { group: 'Herpeto', sci: 'Tupinambis rufescens & Familias Hylidae / Leptodactylidae', common: 'Lagarto colorado, ranas y serpientes', status: '18 spp. Herpetofauna', note: '12 especies de reptiles y 6 de anfibios en valles secos y quebradas.' },
+                    { group: 'Peces', sci: 'Trichomycterus sp., Prochilodus lineatus, Salminus maxillosus', common: 'Bagrecito, Sábalo y Dorado', status: 'Ictiofauna', note: 'Presentes en los arroyos permanentes y en el Río Grande.' }
+                ],
+                legalDocs: [
+                    { title: 'Decreto Supremo N° 24623 - Creación del ANMI El Palmar', type: 'Decreto Supremo', date: '20 Mayo 1997', pages: 'Gaceta Oficial', desc: 'Declara las 59.484 hectáreas del ANMI El Palmar en el municipio de Presto como parte del SNAP.', fileUrl: '#' },
+                    { title: 'Plan de Manejo del ANMI El Palmar (2014 - 2023)', type: 'Plan de Manejo SERNAP', date: '2014', pages: '245 páginas', desc: 'Diagnóstico Físico-Biológico, Socioeconómico, Zonificación y Programas de Gestión Compartida.', fileUrl: '#' },
+                    { title: 'Resolución Administrativa 01/03 - Estatuto del Consejo de Gestión Compartida', type: 'Normativa Orgánica', date: '17 Marzo 2003', pages: 'Documento Oficial', desc: 'Regula la coadministración entre el SERNAP y las comunidades originarias campesinas de Presto.', fileUrl: '#' }
+                ],
+                tourismIntro: 'Mosaico de los principales atractivos naturales, geológicos y culturales inventariados en el ANMI El Palmar:',
+                tourismList: [
+                    { name: 'Cóndor Bañana (Mirador de Cóndores)', comm: 'Comunidad Rodeo El Palmar', tag: 'Mirador Natural • 3.017 msnm', span: 'md:col-span-8', img: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80', desc: 'Caminata por el río Kesera hasta el peñasco mirador (18°43\'53.6" S - 64°50\'34.2" O) donde se avista al Cóndor Andino en su hábitat natural.' },
+                    { name: 'Cascada y Pozas de Yana Q\'ucha', comm: 'Comunidad El Palmar', tag: 'Caída de Agua • 12 metros', span: 'md:col-span-4', img: 'https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=900&q=80', desc: 'Dos pozas profundas con una cascada de 12 m rodeada de palmeras Janchi coco, ideal para natación y recreación.' },
+                    { name: 'Bosque de Palmeras & Palma T\'uqu', comm: 'Oeste de Comunidad El Palmar', tag: '3.500 ha de Bosque Endémico', span: 'md:col-span-4', img: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=900&q=80', desc: 'Santuario de Parajubaea torallyi, helechos y pino de monte con áreas de camping junto al río Mayu Tinku.' },
+                    { name: 'Cañón Misión y Peñasco Q\'ala Rumi', comm: 'Comunidad Rodeo', tag: 'Petroglifos & Cañón', span: 'md:col-span-4', img: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=900&q=80', desc: 'Peñasco de 60 m con antiguos petroglifos en roca, pozas cristalinas y observación de loros.' },
+                    { name: 'Loro Qaqa, Canal Mayu y Cultura Yampará', comm: 'La Joya / San Francisco', tag: 'Fauna & Cestería en Palma', span: 'md:col-span-4', img: 'https://images.unsplash.com/photo-1534567153574-2b12153a87f0?auto=format&fit=crop&w=900&q=80', desc: 'Avistamiento de Paraba Frente Roja y Oso Jucumari, además de cestería tradicional en fibra de palma y chullpares.' }
+                ],
+                researchList: [
+                    { type: 'Diagnóstico de Fauna', title: 'Evaluación y Actualización del Inventario de Fauna Silvestre del ANMI El Palmar (155 Especies)', author: 'Equipo Técnico Plan de Manejo / SERNAP & USFX', year: '2013 - 2023', summary: 'Registro de 24 mamíferos, 112 aves, 12 reptiles, 6 anfibios y peces en 9 comunidades del área protegida.' },
+                    { type: 'Ciencia Ciudadana USFX', title: 'Resultados del Great Bioblitz 2024 en el ANMI El Palmar y APM Monte Willca', author: '41 Estudiantes de la Carrera de Biología (USFX) junto a Guardaparques y Comunarios', year: '2024', summary: 'Registro georreferenciado de flora y fauna en iNaturalist bajo protocolos de calidad fotográfica, bioseguridad e identificación taxonómica.' },
+                    { type: 'Estudio Botánico', title: 'Conservación y Uso Sostenible de la Palmera Endémica Parajubaea torallyi (Janchi coco)', author: 'Moraes (2020) / Investigaciones Botánicas', year: '2020', summary: 'Evaluación del estado poblacional de los palmares interandinos y lineamientos de cosecha sostenible.' }
+                ],
+                projectsList: [
+                    { name: 'Repoblamiento Forestal en Cabeceras de Cuenca', prog: 'Gestión de RRNN', status: 'Prioritario', desc: 'Reforestación con especies nativas (Polylepis, Podocarpus y Alnus) para garantizar las zonas de recarga hídrica.' },
+                    { name: 'Conservación del Patrimonio Genético del Janchi Coco', prog: 'Enfoque Biocultural', status: 'Activo', desc: 'Protección de áreas de regeneración natural y apoyo a artesanas locales.' },
+                    { name: 'Manejo Silvopastoril y Control de Carga Animal', prog: 'Gestión Compartida', status: 'En Ejecución', desc: 'Regulación comunal del pastoreo extensivo en las 32.639 ha de la zona Este.' }
+                ]
+            },
+
+            inao: {
+                id: 'inao',
+                name: 'PN & ANMI Serranía del Iñao',
+                accent: '#0f766e', // Verde agua / Teal sobrio
+                category: 'Parque Nacional y Área Natural de Manejo Integrado • SERNAP',
+                law: 'Ley de la República N° 2727 (28 de mayo de 2004)',
+                ecoregions: 'Bosque Tucumano-Boliviano • Chaco Serrano • Gran Chaco',
+                heroImg: 'https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=1920&q=85',
+                subtitle: 'Tres extensas serranías paralelas (Ñahuañanca, Iñao y Khaska Orqo) que resguardan la mayor biodiversidad del subandino de Chuquisaca en 4 municipios.',
+                inatProjectSlug: 'pn-anmi-serrania-del-inao',
+                inatCoords: { lat: -19.35, lng: -63.90, radius: 45 },
+                stats: [
+                    { num: '263.090', label: 'Hectáreas Protegidas', sub: '1.422 km² Parque y 1.208 km² ANMI' },
+                    { num: '644', label: 'Plantas Vasculares', sub: 'De un estimado de 2.500 especies' },
+                    { num: '256', label: 'Especies de Fauna', sub: '156 aves, 41 mamíferos, 48 herpeto, 11 peces' },
+                    { num: '48', label: 'Comunidades Vinculadas', sub: 'En 4 municipios + TIOC Guaraní' }
+                ],
+                overview: 'Ubicado al noreste de Chuquisaca entre los 626 y 3.300 m.s.n.m., el PN-ANMI Serranía del Iñao articula tres grandes cordones montañosos (Ñahuañanca, Iñao y Khaska Orqo) que alimentan las cuencas de los ríos Grande (Guapay), Azero y Parapetí. Reúne 5 tipos de formaciones vegetales: Bosque Tucumano-Boliviano, Bosque Seco Chiquitano transicional, Bosque de Yungas, Chaco y Cerrado.',
+                objectives: [
+                    'Conservar la diversidad biológica, recursos genéticos y especies silvestres amenazadas del subandino.',
+                    'Proteger a las serranías del Iñao, Ñahuañanca y Khaska Orqo como productoras de agua y servicios ambientales.',
+                    'Preservar áreas naturales intangibles para la investigación científica y el monitoreo ecológico.',
+                    'Precautelar los espacios paisajísticos, arqueológicos guaraníes e históricos (Ruta del Che en Ñancahuazú).'
+                ],
+                territoryMeta: [
+                    { label: 'Ubicación Política (4 Municipios)', val: 'Provincias Luis Calvo (Villa Vaca Guzmán), Hernando Siles (Monteagudo), Tomina (Padilla) y Belisario Boeto (Villa Serrano).' },
+                    { label: 'Comunidades y TIOC', val: '48 comunidades (40 campesinas, 4 interculturales como Overa Ñancahuazú y 4 guaraníes: Aguayrenda, Ity, Taperillas, Cañadillas). Sobreposición parcial con TIOC Itikaraparirenda.' },
+                    { label: 'Clima e Hidrografía', val: 'Clima subhúmedo a húmedo (14°C a 24°C; 900 a 1.200 mm anuales). Ríos Grande, Azero, Bañado, Limón, Pilli Pilli y Ñancahuazú.' },
+                    { label: 'Accesibilidad', val: 'Carretera Sucre – Padilla – Monteagudo – Muyupampa – Camiri y accesos por Azero, Aguadillas, Taperillas y Ticucha.' }
+                ],
+                maps: [
+                    {
+                        title: 'Zonificación: Parque Nacional y ANMI',
+                        desc: 'El Parque Nacional (Zona Núcleo intangible) protege las cumbres de Khaska Orqo (84 km), Iñao (62 km) y Ñahuañanca (60 km). El ANMI rodea al núcleo en las zonas bajas con áreas de Uso Moderado y Manejo Integrado Tradicional.',
+                        highlights: ['Parque Nacional: 1.422,4 km²', 'ANMI: 1.208,5 km²', 'Zona Externa de Amortiguación']
+                    },
+                    {
+                        title: 'Mapa de Ecorregiones y 5 Formaciones Vegetales',
+                        desc: 'Transición entre Bosque Tucumano-Boliviano, Chaco Serrano y Gran Chaco, incluyendo relictos de Yungas, elementos Chiquitanos y Cerrado con palmera Syagrus cardenasii.',
+                        highlights: ['644 especies registradas', '20 asociaciones vegetales', 'Alto endemismo subandino']
+                    },
+                    {
+                        title: 'Mapa Hidrográfico y Cuencas',
+                        desc: 'Comprende la Parte Media y Baja del Río Grande (Guapay), la cuenca del Río Azero y el Río Bañado.',
+                        highlights: ['Río Azero y Río Grande', 'Aporte hídrico a 4 municipios', 'Monitoreo socioambiental']
+                    }
+                ],
+                photos: [
+                    { url: 'https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=900&q=80', title: 'Bosque Tucumano-Boliviano', caption: 'Serranías nubladas de Iñao y Khaska Orqo con helechos arbóreos, cedros y pinos de monte.' },
+                    { url: 'https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=900&q=80', title: 'Ríos Azero y Cuerpos de Agua', caption: 'Cañones profundos y ríos caudalosos que alimentan la cuenca del Río Grande.' },
+                    { url: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=900&q=80', title: 'Corredor de Grandes Mamíferos', caption: 'Territorio del Jaguar (Panthera onca), Tapir (Tapirus terrestris) y Oso Jucumari.' }
+                ],
+                quickSummaries: {
+                    turismo: 'Laguna Iñao, Aguas Termales de Iripiti, Cascada Cumandayti, Cañón Largo, Rafting en Río Azero y Ruta del Che.',
+                    legal: 'Ley N° 2727 (28 de mayo de 2004), Plan de Manejo 2012-2021 (262 páginas) y Estudio de Justificación.',
+                    science: 'Línea base de 644 plantas y 256 vertebrados; priorización de Panthera onca, Tremarctos ornatus y Ara militaris.'
+                },
+                taxonomicBreakdown: [
+                    { group: 'Aves', count: '156 spp.', pct: '60,9%' },
+                    { group: 'Mamíferos', count: '41 spp.', pct: '16,0%' },
+                    { group: 'Reptiles', count: '35 spp.', pct: '13,7%' },
+                    { group: 'Anfibios', count: '13 spp.', pct: '5,1%' },
+                    { group: 'Peces', count: '11 spp.', pct: '4,3%' },
+                    { group: 'Flora Vascular', count: '644 spp.', pct: 'Est. 2.500' }
+                ],
+                speciesList: [
+                    { group: 'Mamíferos', sci: 'Panthera onca', common: 'Jaguar / Yaguareté', status: 'VU (Priorizada)', note: 'Gran depredador priorizado en el corredor continuo de las tres serranías.' },
+                    { group: 'Mamíferos', sci: 'Tremarctos ornatus', common: 'Oso Jucumari', status: 'VU (Priorizada)', note: 'Especie emblema del logotipo oficial del PN-ANMI Serranía del Iñao.' },
+                    { group: 'Mamíferos', sci: 'Tapirus terrestris & Myrmecophaga tridactyla', common: 'Anta / Tapir y Oso Hormiguero Gigante', status: 'VU / NT', note: 'Observados en senderos de Los Pinos y bosques subandinos.' },
+                    { group: 'Mamíferos', sci: 'Lontra longicaudis', common: 'Lobito de Río', status: 'NT', note: 'Bioindicador acuático en los ríos Azero y Pilli Pilli.' },
+                    { group: 'Aves', sci: 'Ara militaris & Ara rubrogenys', common: 'Paraba Militar y Paraba Frente Roja', status: 'EN / CR (Priorizadas)', note: 'Guacamayos amenazados que habitan los cañones y serranías.' },
+                    { group: 'Aves', sci: 'Tigrisoma fasciatum & Amazona tucumana', common: 'Garza Tigre y Loro Alisero', status: 'VU (Priorizadas)', note: 'Especialistas de ríos de montaña y bosques de aliso.' },
+                    { group: 'Flora', sci: 'Cedrela lilloi, Juglans australis, Podocarpus parlatorei', common: 'Cedro, Nogal y Pino de monte', status: 'VU', note: 'Especies arbóreas clave del Bosque Tucumano-Boliviano.' },
+                    { group: 'Flora', sci: 'Handroanthus impetiginosus & Machaerium scleroxylon', common: 'Lapacho Rosado y Morado', status: 'VU / EN', note: 'Maderas preciosas protegidas frente a la tala selectiva.' },
+                    { group: 'Herpeto', sci: 'Hyla albonigra, Micrurus annellatus, Crotalus durissus', common: 'Rana andina, Coral y Cascabel', status: '48 spp. Herpetofauna', note: '35 especies de reptiles y 13 de anfibios.' },
+                    { group: 'Peces', sci: 'Pseudoplatystoma corruscans & Prochilodus lineatus', common: 'Surubí Pintado y Sábalo', status: 'NT (11 spp. Peces)', note: 'Especies migratorias en los ríos Grande y Azero.' }
+                ],
+                legalDocs: [
+                    { title: 'Ley de la República N° 2727 - Creación del PN y ANMI Serranía del Iñao', type: 'Ley Nacional', date: '28 Mayo 2004', pages: 'Gaceta Oficial', desc: 'Crea el Área Protegida con doble categoría sobre 263.090 hectáreas en Chuquisaca.', fileUrl: '#' },
+                    { title: 'Plan de Manejo del PN-ANMI Serranía del Iñao (2012 - 2021)', type: 'Plan de Manejo SERNAP', date: '2011 - 2012', pages: '262 páginas + 44 Mapas', desc: 'Diagnóstico consolidado, Zonificación de las 3 serranías y Programas de Gestión.', fileUrl: '#' },
+                    { title: 'Estudio de Justificación para la Creación del Área Protegida Serranía del Iñao', type: 'Estudio Técnico Prefectura', date: '2001', pages: '55 páginas', desc: 'Documento técnico de línea base ecológica, rango altitudinal y coordenadas de creación.', fileUrl: '#' }
+                ],
+                tourismIntro: 'Mosaico fotográfico de los atractivos ecoturísticos, históricos y culturales del PN-ANMI Serranía del Iñao:',
+                tourismList: [
+                    { name: 'Laguna Iñao y Sendero Los Pinos', comm: 'Entierrillos / Los Pinos', tag: 'Laguna & Avistamiento de Fauna', span: 'md:col-span-6', img: 'https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=1000&q=80', desc: 'Laguna rodeada de palmeras y helechos gigantes, hábitat de aves acuáticas, tapir y jucumari.' },
+                    { name: 'Aguas Termales de Iripiti y Balneario El Mesón', comm: 'Comunidad Iripiti', tag: 'Aguas Termales Medicinales', span: 'md:col-span-6', img: 'https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=1000&q=80', desc: 'Formaciones rocosas con piscinas naturales de aguas termales mineralizadas junto a vertientes frías.' },
+                    { name: 'Cañón Largo, Cascada Cumandayti y Campo Azul', comm: 'Camotal / Serranía Incahuasi', tag: 'Cataratas & Cañones', span: 'md:col-span-4', img: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=900&q=80', desc: 'Túnel quebrado Los Frías, cataratas y cañones surcados por los ríos Campirenda, Ticucha y Monte Grande.' },
+                    { name: 'Rafting en Río Azero Norte y Río Grande', comm: 'A 34 km y 100 km de Monteagudo', tag: 'Deportes de Aventura', span: 'md:col-span-4', img: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=900&q=80', desc: 'Recorridos de canotaje y rafting observando nutrias (lobito de río), aves y bosques ribereños.' },
+                    { name: 'Comunidades Guaraníes (Aguayrenda, Taperillas) y Ruta del Che', comm: 'Cañón del Río Ñancahuazú', tag: 'Cultura Guaraní & Historia', span: 'md:col-span-4', img: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=900&q=80', desc: 'Cultura viva de la nación Guaraní, sitios arqueológicos en Ity e historia en el cañón de Ñancahuazú.' }
+                ],
+                researchList: [
+                    { type: 'Diagnóstico SERNAP', title: 'Línea Base de Flora (644 spp.) y Fauna Vertebrada (256 spp.) del PN-ANMI Serranía del Iñao', author: 'Equipo Núcleo de Planificación SERNAP', year: '2011 - 2023', summary: 'Caracterización de las 5 formaciones vegetales y priorización de especies amenazadas para monitoreo.' },
+                    { type: 'Servicios Ambientales', title: 'Valoración Integral de Servicios Hídricos y Factibilidad REDD+ en la Serranía del Iñao', author: 'Programa de Financiamiento Sostenible', year: 'Plan de Manejo', summary: 'Estudio de flujos hídricos y mecanismos de compensación por conservación de bosques comunitarios.' }
+                ],
+                projectsList: [
+                    { name: 'Conectividad del Corredor Subandino y Gran Chaco', prog: 'Conservación e Investigación', status: 'Estratégico', desc: 'Monitoreo biológico participativo de Jaguar, Jucumari y Parabas.' },
+                    { name: 'Convenios de Acceso Universitario y Tesis USFX', prog: 'Gestión del Conocimiento', status: 'Alianza USFX', desc: 'Retribución social para jóvenes de las comunidades del AP e impulso a tesistas de Biología.' },
+                    { name: 'Ordenamiento Ecoturístico Regional', prog: 'Desarrollo Sostenible', status: 'En Gestión', desc: 'Integración de circuitos en Monteagudo, Villa Vaca Guzmán, Padilla y Villa Serrano.' }
+                ]
+            },
+
+            willca: {
+                id: 'willca',
+                name: 'APM ANMI Monte Willca',
+                accent: '#b45309', // Amarillo ocre / Dorado tierra sobrio
+                category: 'Área Protegida Municipal • Distrito 7 de Sucre',
+                law: 'Ordenanza Autonómica Municipal N° 012/2012 (1 de febrero de 2012)',
+                ecoregions: 'Bosques Secos Interandinos de Bolivia (BSI)',
+                heroImg: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1920&q=85',
+                subtitle: 'Área Protegida Municipal en el Distrito 7 de Sucre (Cantón Chuqui Chuqui / Río Chico), gestionada por sus comunidades locales e investigada por la Carrera de Biología de la USFX.',
+                inatProjectSlug: 'apm-monte-willca-sucre',
+                inatCoords: { lat: -18.795, lng: -65.124, radius: 15 },
+                stats: [
+                    { num: '11.756', label: 'Hectáreas Protegidas', sub: '2,28% de la superficie departamental' },
+                    { num: '1.700-2.700', label: 'Altitud (m.s.n.m.)', sub: 'Temp. 12-16°C y lluvia 500-700 mm' },
+                    { num: '7 - 8', label: 'Comunidades Manejadoras', sub: 'Mojtulo (910 hab.), Chuqui Chuqui, Tunal...' },
+                    { num: '2004-2012', label: 'Proceso de Consolidación', sub: 'Acta fundacional 2004 y O.M. 012/2012' }
+                ],
+                overview: 'El Área Natural de Manejo Integrado Monte Willca surgió el 16 de agosto de 2004 como Comité de Conservación del Monte en Chuqui Chuqui, adoptando en 2006 el nombre "Monte Willca" por la alta densidad de árboles de Willca (Anadenanthera colubrina / Piptadenia boliviana) y consolidándose legalmente con la Ordenanza Municipal N° 012/2012. Protege Bosques Secos Interandinos con alto endemismo (cactáceas Neoraimondia herzogiana, Paraba Frente Roja, murciélagos y lepidópteros bioindicadores).',
+                objectives: [
+                    'Promover el Manejo Integrado y Aprovechamiento Sostenible de los recursos del monte, río y quebradas para beneficio de las comunidades.',
+                    'Controlar la extracción de leña, carbón, tierra vegetal (Sacha Guano) y áridos del Río Chico, prohibiendo terminantemente la quema de árboles.',
+                    'Desarrollar el proyecto educativo "Monte Willca, mi tierra, mi territorio, mi riqueza" y el ecoturismo comunitario.',
+                    'Articular investigaciones científicas con la Universidad San Francisco Xavier de Chuquisaca (Biología, BIORENA, BEISA).'
+                ],
+                territoryMeta: [
+                    { label: 'Ubicación y Colindancias (O.M. 012/12)', val: 'Provincia Oropeza, Municipio de Sucre, Distrito 7 (Cantón Chuqui Chuqui, 18°47\'41.7"S 65°07\'28.6"O). Colinda con Q\'ollpana, Mala Vista (Presto), K\'acha K\'acha, Surima, Ovejerías y Yurac Pujyu (Yamparáez).' },
+                    { label: 'Comunidades Manejadoras', val: 'Mojtulo (comunidad más poblada con 910 hab.), Chuqui Chuqui, Compuerta, Tunal, Angostura, Vilcalata y Quiquijana.' },
+                    { label: 'Clima y Vegetación', val: '6 a 8 meses áridos (12-16°C; 500-700 mm). Bosques caducifolios, ralos xeromórficos, arbustos espinosos y cactáceas columnares.' },
+                    { label: 'Marco Institucional', val: 'Asociación ANMI Monte Willca (Estatuto aprobado el 11 de octubre de 2008 en 7 Títulos y 64 Artículos), GAM Sucre, Fundación PASOS, Heifer International y USFX.' }
+                ],
+                maps: [
+                    {
+                        title: 'Mapa de Zonas de Perturbación (Vilar F., 2024 - USFX)',
+                        desc: 'Mapa científico (Escala 1:72.000, WGS84) que ubica las comunidades de Mojtulo, Chuqui Chuqui, Compuerta y Tunal, dividiendo el área en tres categorías para estudios de bioindicadores: Sin Perturbación (SP), Perturbación Media (MP) y Perturbación Alta (AP).',
+                        highlights: ['SP: Sin ganado ni senderos', 'MP: Senderos tradicionales', 'AP: Agrícola / Uso de insecticidas']
+                    },
+                    {
+                        title: 'Zonificación Interna Participativa y Mapas Parlantes',
+                        desc: 'Construida a partir de los Mapas Parlantes comunales ("¿Cómo era antes, cómo es hoy y cómo queremos que sea el Monte Willca?") y clasificada en Zona de Protección Estricta (recarga hídrica), Uso Moderado, Manejo Tradicional, Uso Especial y Amortiguamiento.',
+                        highlights: ['Protección de manantiales', 'Regulación de áridos en Río Chico', 'Ordenamiento agroecológico']
+                    }
+                ],
+                photos: [
+                    { url: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=900&q=80', title: 'Bosque Seco de Willca y Caraparí', caption: 'Asociaciones xerofíticas de Anadenanthera colubrina y Neoraimondia herzogiana.' },
+                    { url: 'https://images.unsplash.com/photo-1532094349884-543bc11b234d?auto=format&fit=crop&w=900&q=80', title: 'Monitoreo Biológico USFX', caption: 'Trabajo de campo intenso en lepidópteros, murciélagos y Great Bioblitz 2024.' },
+                    { url: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=900&q=80', title: 'Valle Productivo de Río Chico', caption: 'Comunidades de Mojtulo, Chuqui Chuqui, Compuerta y Tunal en el Distrito 7.' }
+                ],
+                quickSummaries: {
+                    turismo: 'Senderos del Bosque de Willca y Caraparí, circuito agroturístico en Río Chico y observación de Paraba Frente Roja.',
+                    legal: 'Ordenanza Municipal N° 012/2012, Actas Fundacionales (2004-2008) y Plan Estratégico de Gestión (2013).',
+                    science: 'Estudios de Lepidópteros en zonas SP/MP/AP (2024), Conservación de Murciélagos y Great Bioblitz 2024.'
+                },
+                taxonomicBreakdown: [
+                    { group: 'Flora Clave', count: 'Willca & Caraparí', pct: 'Bosque Seco BSI' },
+                    { group: 'Parientes Silvestres', count: 'Aribibi & Ulupica', pct: 'Capsicum spp.' },
+                    { group: 'Aves', count: 'Ara rubrogenys', pct: 'En Peligro Crítico' },
+                    { group: 'Quirópteros', count: 'Murciélagos', pct: 'Polinizadores / Control' },
+                    { group: 'Lepidópteros', count: 'Mariposas', pct: 'Bioindicadores SP/MP/AP' },
+                    { group: 'Mastofauna', count: 'Puma & Tamandua', pct: 'Nativos del Valle' }
+                ],
+                speciesList: [
+                    { group: 'Flora', sci: 'Anadenanthera colubrina / Piptadenia boliviana', common: 'Árbol de Willca', status: 'Especie Emblema', note: 'Árbol nativo de gran valor ecológico y cultural que da nombre al Área Protegida.' },
+                    { group: 'Flora', sci: 'Neoraimondia herzogiana', common: 'Caraparí', status: 'Endémica de Valles Secos', note: 'Cactácea columnar gigante clave para murciélagos y aves del bosque seco.' },
+                    { group: 'Flora', sci: 'Cardenasiodendron brachypterum & Prosopis alba', common: 'Mara y Thak\'o (Algarrobo)', status: 'Endémica / Nativa', note: 'Árboles representativos del estrato superior del bosque xerofítico.' },
+                    { group: 'Flora', sci: 'Capsicum chacoense & Capsicum eximium', common: 'Aribibi y Ulupica', status: 'Recursos Genéticos', note: 'Ajíes silvestres nativos junto a k\'ayara (Bromelia serrata), lloque y tuna.' },
+                    { group: 'Aves', sci: 'Ara rubrogenys', common: 'Paraba Frente Roja', status: 'CR (Peligro Crítico)', note: 'Especie endémica amenazada presente en los valles secos del Distrito 7.' },
+                    { group: 'Aves', sci: 'Campephilus leucopogon, Aquila chrysaetos, Ortalis sp.', common: 'Pájaro carpintero, Águila y Pava de monte', status: 'Avifauna Local', note: 'Registradas en quebradas y zonas de bosque conservado.' },
+                    { group: 'Mamíferos', sci: 'Orden Chiroptera (Murciélagos)', common: 'Murciélagos de Monte Willca', status: 'Objeto de Estudio USFX', note: 'Esenciales en polinización, dispersión de semillas y control de plagas en Río Chico.' },
+                    { group: 'Mamíferos', sci: 'Tamandua tetradactyla, Puma concolor, Odocoileus virginianus', common: 'Oso hormiguero, Puma y Venado', status: 'Mastofauna', note: 'Reportados en el diagnóstico del Atlas Municipal y Plan de Manejo.' },
+                    { group: 'Peces', sci: 'Orden Lepidoptera', common: 'Mariposas Polinizadoras y Bioindicadoras', status: 'Investigación USFX 2024', note: 'Estudiadas en zonas Sin Perturbación (SP), Media (MP) y Alta (AP).' }
+                ],
+                legalDocs: [
+                    { title: 'Ordenanza Autonómica Municipal N° 012/2012 - Creación ANMI Monte Willca', type: 'Ordenanza G.A.M. Sucre', date: '1 Febrero 2012', pages: 'Concejo Municipal de Sucre', desc: 'Declara las 11.756 hectáreas en el Distrito 7 (Cantón Chuqui Chuqui) y regula la protección de sus recursos.', fileUrl: '#' },
+                    { title: 'Plan de Manejo ANMI Monte Willca - Parte II: Plan Estratégico de Gestión', type: 'Plan de Manejo', date: '2013', pages: '52 páginas', desc: 'Desarrolla los 3 Programas Estratégicos, proyectos de inversión y estrategias con la USFX.', fileUrl: '#' },
+                    { title: 'Actas de Fundación (2004), Denominación (2006) y Estatuto Orgánico (2008)', type: 'Documentos Históricos Comunales', date: '2004 - 2008', pages: 'Libro de Actas Notariado', desc: 'Acta de apertura del 16 de agosto de 2004 en Chuqui Chuqui y aprobación de los 64 artículos del Estatuto.', fileUrl: '#' }
+                ],
+                tourismIntro: 'Mosaico fotográfico de los atractivos naturales y agroturísticos del APM ANMI Monte Willca en el Distrito 7 de Sucre:',
+                tourismList: [
+                    { name: 'Bosque Xerofítico de Willca y Cactáceas Gigantes Caraparí', comm: 'Mojtulo y Chuqui Chuqui', tag: 'Senderismo & Paisaje BSI', span: 'md:col-span-7', img: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1100&q=80', desc: 'Recorrido por las laderas sin perturbación (SP) donde dominan los árboles de Willca y cactus columnares Neoraimondia herzogiana.' },
+                    { name: 'Circuito de Agroturismo y Fruticultura en el Valle de Río Chico', comm: 'Compuerta, Tunal y Angostura', tag: 'Agroturismo Comunitario', span: 'md:col-span-5', img: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=900&q=80', desc: 'Huertos tradicionales de cítricos, frutales subtropicales, apicultura ecológica y gastronomía local a 45 minutos de Sucre.' },
+                    { name: 'Rutas de Avistamiento de Paraba Frente Roja y Polinizadores', comm: 'Quebradas de Monte Willca', tag: 'Observación Científica y Fotografía', span: 'md:col-span-12', img: 'https://images.unsplash.com/photo-1534567153574-2b12153a87f0?auto=format&fit=crop&w=1400&q=80', desc: 'Espacios naturales de observación de aves endémicas (Ara rubrogenys), mariposas diurnas y refugios de murciélagos.' }
+                ],
+                researchList: [
+                    { type: 'Investigación / Póster USFX (2024)', title: 'Evaluación de Mariposas (Lepidoptera) en Tres Categorías de Perturbación (SP, MP, AP) en el APM ANMI Monte Willca', author: 'Carrera de Biología - USFX Chuquisaca (Cartografía: Vilar F., 2024)', year: '2024', summary: 'Análisis del impacto de la fragmentación del Bosque Seco Interandino y el uso de insecticidas sobre los insectos polinizadores en las 7 comunidades.' },
+                    { type: 'Proyecto Científico-Educativo USFX (2024)', title: 'Conservación e Importancia Ecológica de los Murciélagos (Chiroptera) en la Comunidad de Mojtulo y Monte Willca', author: 'Carrera de Biología - USFX Chuquisaca', year: '2024', summary: 'Promoción del conocimiento científico sobre murciélagos mediante monitoreo de campo y prácticas artísticas y comunicacionales.' },
+                    { type: 'Ciencia Ciudadana (2024)', title: 'Great Bioblitz 2024: Registro Fotográfico y Taxonómico en iNaturalist en el APM Monte Willca y ANMI El Palmar', author: '41 Estudiantes de Biología USFX, Dirigentes, Comunarios y Guardaparques', year: '2024', summary: 'Trabajo intensivo de campo y gabinete con validación taxonómica en consulta a especialistas de cada grupo.' }
+                ],
+                projectsList: [
+                    { name: 'Cosecha de Agua y Protección de Áreas de Recarga Hídrica', prog: 'Programa Desarrollo Territorial', status: '1.950.000 Bs.', desc: 'Protección de manantiales, control de torrenteras del Río Chico y adaptación al cambio climático en las 8 comunidades.' },
+                    { name: 'Ecoturismo Comunitario y Centro de Interpretación Monte Willca', prog: 'Turismo Receptivo D-7', status: '870.000 Bs.', desc: 'Consolidación de 3 rutas ecoturísticas y capacitación de guías locales en Mojtulo y Chuqui Chuqui.' },
+                    { name: 'Investigación Etnobotánica y Monitoreo Participativo con la USFX', prog: 'Conservación de Biodiversidad', status: 'En Ejecución', desc: 'Alianza con la USFX (Biología, BIORENA, BEISA) para tesis de grado y educación ambiental.' }
+                ]
+            }
+        };
+
+        // 2. DATOS DE LAS OTRAS 8 ÁREAS PROTEGIDAS MUNICIPALES (Con acentos terracota/rojos/naranjas para el Chaco)
+        const municipalAreasData = [
+            {
+                code: 'M-CH-03',
+                name: 'ANMI Municipal "Ivi Maraei (Tierra Sin Mal)"',
+                municipality: 'Macharetí • Gran Chaco / Tucumano',
+                law: 'Ley Municipal N° 27/2015',
+                area: '91.700 Ha',
+                alt: '800 - 1.599 msnm',
+                eco: 'Boliviano-Tucumano',
+                filterTag: 'chaco',
+                img: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80',
+                desc: 'En guaraní significa "Tierra Sin Mal", vinculada a la historia de Apiaguaiki Tumpa. Protege las fuentes de agua y bosques colectores de humedad de Macharetí.',
+                fauna: 'Jaguar (Panthera onca), Jucumari, Anta (Tapirus terrestris), Oso bandera, Ranas (Phyllomedusa boliviana).',
+                flora: 'Cebil, Quebracho colorado y blanco, Toborochi, Lapacho y Mistol.',
+                obj: 'Proteger nacientes de agua, establecer un corredor biológico y resguardar la cultura del pueblo Guaraní.'
+            },
+            {
+                code: 'M-CH-02',
+                name: 'Reserva Histórica y de Vida Silvestre Héroes del Chaco',
+                municipality: 'Macharetí • Llanura Chaqueña',
+                law: 'Ley Municipal N° 39/2016',
+                area: '268.913 Ha',
+                alt: '242 - 466 msnm',
+                eco: 'Gran Chaco',
+                filterTag: 'chaco',
+                img: 'https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=800&q=80',
+                desc: 'La mayor área protegida municipal del departamento en la llanura chaqueña, resguardando escenarios de la Guerra del Chaco y fauna xerofítica.',
+                fauna: 'Guanaco chaqueño (Lama guanicoe), Puma, Anta, Oso bandera, Tigrillo, Tatú y Corechi.',
+                flora: 'Quebracho blanco, Quebracho colorado, Guayacán, Mistol y Cuchi.',
+                obj: 'Mantener los sistemas ecológicos de la llanura del Gran Chaco y los valores históricos de la Guerra del Chaco.'
+            },
+            {
+                code: 'M-CH-05',
+                name: 'ANMI Cuenca Alta del Río Parapetí "Fernández - San Juan del Piray"',
+                municipality: 'Monteagudo • Hernando Siles',
+                law: 'Ley Municipal N° 01/2017',
+                area: '118.402 Ha',
+                alt: '1.180 - 3.540 msnm',
+                eco: 'Tucumano-Boliviano y Chaco Serrano',
+                filterTag: 'tucumano',
+                img: 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=800&q=80',
+                desc: 'Zona de recarga de acuíferos que da origen a la cuenca alta del río Parapetí en Monteagudo.',
+                fauna: '5 especies de felinos, Oso Jucumari, Cóndor, Loro Alisero (Amazona tucumana) y Bothrops jonathani.',
+                flora: 'Relictos de Quewiña (Polylepis crista-galli) a >3.200 m, Pino de cerro, Cedro, Nogal y Lapacho.',
+                obj: 'Conservar las funciones ambientales de la cuenca del río Parapetí y sus nacientes de agua.'
+            },
+            {
+                code: 'M-CH-06',
+                name: 'Área Protegida Gestión Hídrica Serranía Los Milagros',
+                municipality: 'San Pablo de Huacareta',
+                law: 'Ley Municipal N° 007/2014',
+                area: '103.274 Ha',
+                alt: '660 - 2.750 msnm',
+                eco: 'Bosque Tucumano-Boliviano',
+                filterTag: 'tucumano',
+                img: 'https://images.unsplash.com/photo-1511497584788-876760111969?auto=format&fit=crop&w=800&q=80',
+                desc: 'Fuente vital de agua para las comunidades del municipio de Huacareta con alta diversidad de flora laurácea y mirtácea.',
+                fauna: 'Paraba Militar (Ara militaris), Paraba Frente Roja, Jaguar, Jucumari, Dorado y Surubí.',
+                flora: 'Lapacho, Pino del cerro, Aliso, Barroso, Cedro y Nogal.',
+                obj: 'Garantizar la permanencia de las fuentes de agua y la biodiversidad de la Serranía Los Milagros.'
+            },
+            {
+                code: 'M-CH-10',
+                name: 'Área del Agua y Biodiversidad Itachinini - Itiyuro',
+                municipality: 'Huacareta • Rosario del Ingre',
+                law: 'Ley Municipal N° 064/2018',
+                area: '97.610 Ha',
+                alt: '1.678 msnm',
+                eco: 'Subandino Boliviano-Tucumano',
+                filterTag: 'chaco',
+                img: 'https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&w=800&q=80',
+                desc: 'Itachinini ("piedra que suena") e Itiyuro ("piedra con boca") son el reservorio hídrico de todas las comunidades del Distrito Rosario del Ingre.',
+                fauna: 'Jaguar, Jucumari, Anta, Oso bandera, Mono Martín, Ranas (Phyllomedusa boliviana) y Boa.',
+                flora: 'Guayacán o morado (Machaerium scleroxylon), Cuchi, Pino de monte, Cedro y Lapacho.',
+                obj: 'Proteger las fuentes de agua en la microcuenca Rosario del Ingre.'
+            },
+            {
+                code: 'M-CH-09',
+                name: 'ANMI Municipal "Serranías de Igüembe"',
+                municipality: 'Villa Vaca Guzmán (Muyupampa)',
+                law: 'Ley Municipal N° 094/2020',
+                area: '122.313 Ha',
+                alt: '500 - 1.700 msnm',
+                eco: 'Bosque Tucumano-Boliviano',
+                filterTag: 'chaco',
+                img: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80',
+                desc: 'Comprende 7 comunidades guaraníes y 7 campesinas, resguardando la comunidad originaria de Tentayapi ("La Casa Última", Ley Nacional N° 2921).',
+                fauna: 'Jucumari, Puma, Tapir, Pecarí, Oso hormiguero gigante y Guacamayo verde.',
+                flora: 'Cebil, Mara blanca, Lapacho rosado, Cuchi y Quebracho colorado.',
+                obj: 'Conservar los ecosistemas forestales y el patrimonio cultural de los Guaraní Simba en Tentayapi.'
+            },
+            {
+                code: 'M-CH-08',
+                name: 'ANMI del Agua y Biodiversidad Serranía de Incahuasi',
+                municipality: 'Villa Vaca Guzmán (Muyupampa)',
+                law: 'Ley Municipal N° 103/2021',
+                area: '29.047 Ha',
+                alt: '804 - 1.986 msnm',
+                eco: 'Tucumano-Boliviano y Chaco Serrano',
+                filterTag: 'tucumano',
+                img: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80',
+                desc: 'Protege ojos de agua y microcuencas del flanco oeste de la Serranía de Incahuasi que abastecen a Muyupampa, Ity y Sapiranguimiri.',
+                fauna: '5 especies de felinos, Oso Jucumari, Loro Alisero y Boana riojana.',
+                flora: 'Lapacho, Pino del cerro, Aliso y Queñua.',
+                obj: 'Asegurar la provisión de agua para comunidades indígenas, campesinas y el centro poblado de Muyupampa.'
+            },
+            {
+                code: 'M-CH-11',
+                name: 'ANMI de Conservación del Agua Villa Abecia',
+                municipality: 'Villa Abecia • Sud Cinti',
+                law: 'Ley Municipal N° 54/2018',
+                area: '34.743 Ha',
+                alt: '3.100 - 4.036 msnm',
+                eco: 'Puna Norteña y Prepuna',
+                filterTag: 'puna',
+                img: 'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80',
+                desc: 'Ecosistema altoandino en los Cintis que protege bofedales renovadores de agua y especies en Peligro Crítico.',
+                fauna: 'Gato Andino (Leopardus jacobita - CR), Guanaco (Lama guanicoe - CR), Taruka (Hippocamelus antisensis) y Monterita boliviana.',
+                flora: 'Keñua (Polylepis tomentella, P. besseri, P. racemosa), Kiswara, Churqui y bofedales (Distichia muscoides).',
+                obj: 'Proteger las fuentes de agua altoandinas y el hábitat crítico del Gato Andino y el Guanaco.'
+            }
+        ];
+
+        let currentAreaKey = 'palmar';
+        let currentSubtab = 'inicio';
+
+        // RENDERIZAR LAS 8 ÁREAS MUNICIPALES CON EL ESTILO EXACTAMENTE IGUAL A CAPTURA 4 (Foto completa + Título arriba con difuminado)
+        function renderMunicipalGrid(filter = 'all') {
+            const container = document.getElementById('municipal-grid');
+            const filtered = filter === 'all' ? municipalAreasData : municipalAreasData.filter(a => a.filterTag === filter);
+
+            container.innerHTML = filtered.map(item => `
+                <div onclick="openMunicipalModal('${item.code}')" class="mosaic-tile h-72 rounded-md cursor-pointer shadow-sm group">
+                    <img src="${item.img}" alt="${item.name}" class="w-full h-full object-cover">
+                    <!-- Difuminado superior e inferior para lectura nítida sobre la foto -->
+                    <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/20 to-black/75"></div>
+                    <div class="absolute inset-0 p-5 flex flex-col justify-between">
+                        <div>
+                            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-amber-300 block mb-1">
+                                ${item.municipality}
+                            </span>
+                            <h4 class="font-condensed text-2xl font-bold text-white uppercase leading-tight">
+                                ${item.name}
+                            </h4>
+                        </div>
+                        <div class="flex items-center justify-between text-xs text-stone-200 border-t border-white/20 pt-2.5">
+                            <span class="font-semibold">${item.area}</span>
+                            <span class="font-bold uppercase tracking-wider text-white group-hover:underline">Ver Ficha →</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function filterMunicipal(tag) {
+            renderMunicipalGrid(tag);
+        }
+
+        function openMunicipalModal(code) {
+            const item = municipalAreasData.find(a => a.code === code);
+            if (!item) return;
+            document.getElementById('m-modal-badge').textContent = `${item.code} • Área Protegida Municipal`;
+            document.getElementById('m-modal-title').textContent = item.name;
+            document.getElementById('m-modal-location').textContent = item.municipality;
+            document.getElementById('m-modal-law').textContent = item.law;
+            document.getElementById('m-modal-area').textContent = item.area;
+            document.getElementById('m-modal-alt').textContent = item.alt;
+            document.getElementById('m-modal-eco').textContent = item.eco;
+            document.getElementById('m-modal-desc').textContent = item.desc;
+            document.getElementById('m-modal-fauna').textContent = item.fauna;
+            document.getElementById('m-modal-flora').textContent = item.flora;
+            document.getElementById('m-modal-obj').textContent = item.obj;
+            document.getElementById('municipal-modal').classList.remove('hidden');
+        }
+
+        function closeMunicipalModal() {
+            document.getElementById('municipal-modal').classList.add('hidden');
+        }
+
+        // ABRIR PÁGINA DEDICADA DE UNA DE LAS 3 ÁREAS PROTEGIDAS PRINCIPALES
+        function openAreaPage(areaKey, initialTab = 'inicio') {
+            const area = mainAreasData[areaKey];
+            if (!area) return;
+            currentAreaKey = areaKey;
+
+            // Actualizar color de énfasis sobrio para esta Área Protegida
+            document.documentElement.style.setProperty('--accent-color', area.accent);
+
+            // Actualizar navegación superior
+            ['home', 'palmar', 'inao', 'willca'].forEach(k => {
+                const btn = document.getElementById('nav-' + k);
+                if (!btn) return;
+                if (k === areaKey) {
+                    btn.className = 'px-4 py-2 rounded text-sm font-bold bg-stone-900 text-white transition flex items-center space-x-2';
+                } else {
+                    btn.className = 'px-4 py-2 rounded text-sm font-medium text-stone-700 hover:bg-stone-200/70 transition flex items-center space-x-2';
+                }
+            });
+
+            // Hero del Área
+            document.getElementById('area-hero-img').src = area.heroImg;
+            document.getElementById('area-badge-cat').textContent = area.category;
+            document.getElementById('area-badge-law').textContent = area.law;
+            document.getElementById('area-badge-ecoregion').textContent = area.ecoregions;
+            document.getElementById('area-title').textContent = area.name;
+            document.getElementById('area-subtitle').textContent = area.subtitle;
+
+            // Subpágina 1: Inicio (Banda NatGeo de resultados con foto de fondo)
+            document.getElementById('area-stats-bg').src = area.heroImg;
+            document.getElementById('area-stats-bar').innerHTML = area.stats.map(s => `
+                <div>
+                    <div class="font-condensed text-4xl sm:text-5xl font-extrabold text-white">${s.num}</div>
+                    <div class="w-10 h-0.5 bg-amber-400 mx-auto my-2.5"></div>
+                    <div class="text-xs font-bold uppercase tracking-wider text-white">${s.label}</div>
+                    <div class="text-[11px] text-stone-300 mt-0.5">${s.sub}</div>
+                </div>
+            `).join('');
+
+            document.getElementById('area-overview-text').textContent = area.overview;
+            document.getElementById('area-objectives-list').innerHTML = area.objectives.map(o => `
+                <li class="flex items-start space-x-2.5">
+                    <span class="w-1.5 h-1.5 rounded-full accent-bg mt-2 shrink-0"></span>
+                    <span>${o}</span>
+                </li>
+            `).join('');
+
+            document.getElementById('area-territory-meta').innerHTML = area.territoryMeta.map(m => `
+                <div class="border-l-2 accent-border pl-4 py-1">
+                    <span class="text-xs font-bold uppercase tracking-wider text-stone-900 block">${m.label}</span>
+                    <p class="text-stone-600 text-xs sm:text-sm leading-relaxed mt-0.5">${m.val}</p>
+                </div>
+            `).join('');
+
+            // Mapas
+            document.getElementById('map-layer-buttons').innerHTML = area.maps.map((m, idx) => `
+                <button onclick="selectMapLayer(${idx})" id="map-btn-${idx}" class="px-4 py-2 rounded text-xs font-bold transition">
+                    ${m.title}
+                </button>
+            `).join('');
+            selectMapLayer(0);
+
+            // Mosaico de Fotos de Inicio
+            document.getElementById('area-photo-mosaic').innerHTML = area.photos.map(p => `
+                <div class="mosaic-tile h-80 rounded-lg">
+                    <img src="${p.url}" alt="${p.title}" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent p-6 flex flex-col justify-end">
+                        <h4 class="font-condensed text-2xl font-bold text-white uppercase">${p.title}</h4>
+                        <p class="text-xs text-stone-200 mt-1">${p.caption}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('quick-img-turismo').src = area.photos[0].url;
+            document.getElementById('quick-turismo-summary').textContent = area.quickSummaries.turismo;
+            document.getElementById('quick-legal-summary').textContent = area.quickSummaries.legal;
+            document.getElementById('quick-science-summary').textContent = area.quickSummaries.science;
+
+            // Subpágina 2: Conteo de Especies + iNaturalist
+            document.getElementById('taxonomic-bars').innerHTML = area.taxonomicBreakdown.map(t => `
+                <div class="bg-stone-100 p-4 rounded border border-stone-200">
+                    <span class="text-xs text-stone-500 block font-medium">${t.group}</span>
+                    <span class="font-condensed text-2xl font-extrabold text-stone-900 block">${t.count}</span>
+                    <span class="text-[11px] font-bold accent-text">${t.pct}</span>
+                </div>
+            `).join('');
+            filterSpeciesGroup('all');
+            renderDefaultINaturalistSlots(area);
+
+            // Subpágina 3: Reglamentación & PDFs (Con puerta de registro de descarga)
+            document.getElementById('legal-docs-container').innerHTML = area.legalDocs.map(d => `
+                <div class="p-6 flex flex-col md:flex-row md:items-center justify-between gap-4 hover:bg-stone-50 transition">
+                    <div class="space-y-1 max-w-2xl">
+                        <div class="flex items-center space-x-2 text-xs">
+                            <span class="font-bold uppercase tracking-wider accent-text">${d.type}</span>
+                            <span class="text-stone-400">•</span>
+                            <span class="text-stone-500 font-medium">${d.date} (${d.pages})</span>
+                        </div>
+                        <h4 class="font-condensed text-2xl font-bold text-stone-900 uppercase">${d.title}</h4>
+                        <p class="text-xs sm:text-sm text-stone-600">${d.desc}</p>
+                    </div>
+                    <button onclick="requestPdfDownload('${d.title.replace(/'/g, "\\'")}', '${d.fileUrl}')" class="shrink-0 px-5 py-3 rounded bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs uppercase tracking-wider flex items-center space-x-2">
+                        <i data-lucide="download" class="w-4 h-4"></i>
+                        <span>Solicitar / Descargar PDF</span>
+                    </button>
+                </div>
+            `).join('');
+
+            // Subpágina 4: Atractivos Turísticos en Mosaico Fotográfico Cuadrado/Amplio
+            document.getElementById('turismo-intro-text').textContent = area.tourismIntro;
+            document.getElementById('tourism-cards-container').innerHTML = area.tourismList.map(t => `
+                <div class="${t.span} mosaic-tile min-h-[320px] rounded-md shadow-xs group">
+                    <img src="${t.img}" alt="${t.name}" class="absolute inset-0 w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/15"></div>
+                    <div class="relative z-10 h-full p-6 sm:p-8 flex flex-col justify-end">
+                        <span class="text-[11px] font-bold uppercase tracking-[0.2em] text-amber-300 mb-1">${t.tag} • ${t.comm}</span>
+                        <h4 class="font-condensed text-3xl sm:text-4xl font-extrabold text-white uppercase leading-none mb-2">${t.name}</h4>
+                        <p class="text-stone-200 text-xs sm:text-sm leading-relaxed max-w-2xl">${t.desc}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            // Subpágina 5: Investigación Científica (Tesis, Pósters y Diagnósticos con descarga monitoreada)
+            document.getElementById('research-cards-container').innerHTML = area.researchList.map(r => `
+                <div class="p-6 rounded border border-stone-200 bg-stone-50 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                    <div class="space-y-1.5 max-w-3xl">
+                        <div class="flex items-center space-x-2 text-xs">
+                            <span class="px-2.5 py-0.5 rounded bg-stone-200 text-stone-800 font-bold uppercase">${r.type}</span>
+                            <span class="text-stone-500 font-semibold">Año: ${r.year}</span>
+                        </div>
+                        <h4 class="font-condensed text-2xl font-bold text-stone-900 uppercase">${r.title}</h4>
+                        <p class="text-xs font-semibold text-stone-700">Autores: ${r.author}</p>
+                        <p class="text-xs sm:text-sm text-stone-600 leading-relaxed">${r.summary}</p>
+                    </div>
+                    <button onclick="requestPdfDownload('${r.title.replace(/'/g, "\\'")}', '#')" class="shrink-0 px-5 py-3 rounded bg-stone-900 hover:bg-stone-800 text-white font-bold text-xs uppercase tracking-wider flex items-center space-x-2">
+                        <i data-lucide="file-text" class="w-4 h-4"></i>
+                        <span>Descargar Tesis / Póster PDF</span>
+                    </button>
+                </div>
+            `).join('');
+
+            // Subpágina 6: Proyectos
+            document.getElementById('projects-cards-container').innerHTML = area.projectsList.map(p => `
+                <div class="p-6 rounded border border-stone-200 bg-stone-50 flex flex-col justify-between">
+                    <div>
+                        <div class="flex justify-between items-center text-xs mb-3">
+                            <span class="text-stone-500 font-bold uppercase">${p.prog}</span>
+                            <span class="px-2.5 py-0.5 rounded bg-stone-200 text-stone-900 font-bold">${p.status}</span>
+                        </div>
+                        <h4 class="font-condensed text-2xl font-bold text-stone-900 uppercase mb-2">${p.name}</h4>
+                        <p class="text-xs sm:text-sm text-stone-600 leading-relaxed">${p.desc}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('main-portal-view').classList.add('hidden');
+            document.getElementById('area-detail-view').classList.remove('hidden');
+
+            switchSubtab(initialTab);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            lucide.createIcons();
+        }
+
+        function selectMapLayer(idx) {
+            const area = mainAreasData[currentAreaKey];
+            const mapObj = area.maps[idx];
+            area.maps.forEach((_, i) => {
+                const btn = document.getElementById('map-btn-' + i);
+                if (btn) {
+                    btn.className = i === idx
+                        ? 'px-4 py-2 rounded text-xs font-bold transition bg-stone-900 text-white'
+                        : 'px-4 py-2 rounded text-xs font-semibold transition bg-stone-100 text-stone-700 hover:bg-stone-200';
+                }
+            });
+
+            document.getElementById('map-layer-display').innerHTML = `
+                <div class="lg:col-span-7 space-y-4">
+                    <span class="text-xs font-bold uppercase tracking-widest accent-text">Información Cartográfica</span>
+                    <h4 class="font-condensed text-3xl font-bold text-stone-900 uppercase">${mapObj.title}</h4>
+                    <p class="text-stone-700 text-sm sm:text-base leading-relaxed">${mapObj.desc}</p>
+                    <div class="flex flex-wrap gap-2 pt-2">
+                        ${mapObj.highlights.map(h => `<span class="px-3 py-1.5 rounded bg-stone-100 border border-stone-300 text-xs font-semibold text-stone-800">• ${h}</span>`).join('')}
+                    </div>
+                </div>
+                <div class="lg:col-span-5 bg-stone-100 rounded p-8 border border-stone-300 text-center space-y-3">
+                    <i data-lucide="map" class="w-10 h-10 text-stone-700 mx-auto stroke-[1.5]"></i>
+                    <h5 class="font-condensed text-xl font-bold text-stone-900 uppercase">Espacio para Mapa Oficial / Visor SIG</h5>
+                    <p class="text-xs text-stone-600">Proyección UTM Zona 20 Sur (WGS-84). Aquí puedes insertar la lámina cartográfica oficial exportada de tus PDFs o un mapa interactivo de QGIS/Leaflet.</p>
+                </div>
+            `;
+            lucide.createIcons();
+        }
+
+        function filterSpeciesGroup(group) {
+            const area = mainAreasData[currentAreaKey];
+            const list = group === 'all' ? area.speciesList : area.speciesList.filter(s => s.group === group);
+
+            document.querySelectorAll('.sp-filter-btn').forEach(btn => {
+                if ((group === 'all' && btn.textContent.includes('Todas')) || btn.textContent.includes(group)) {
+                    btn.className = 'sp-filter-btn px-4 py-2 rounded text-xs font-bold bg-stone-900 text-white transition';
+                } else {
+                    btn.className = 'sp-filter-btn px-4 py-2 rounded text-xs font-semibold bg-stone-100 text-stone-800 hover:bg-stone-200 transition';
+                }
+            });
+
+            document.getElementById('species-table-body').innerHTML = list.map(sp => `
+                <tr class="hover:bg-stone-50 transition">
+                    <td class="py-3.5 px-4 font-bold text-xs uppercase accent-text">${sp.group}</td>
+                    <td class="py-3.5 px-4 font-bold text-stone-900">${sp.common}</td>
+                    <td class="py-3.5 px-4 italic text-stone-600">${sp.sci}</td>
+                    <td class="py-3.5 px-4"><span class="px-2 py-0.5 rounded bg-stone-200 text-stone-800 text-xs font-semibold">${sp.status}</span></td>
+                    <td class="py-3.5 px-4 text-stone-600 text-xs">${sp.note}</td>
+                </tr>
+            `).join('');
+        }
+
+        // ESPACIO RESERVADO DE iNATURALIST + CARGA EN VIVO OPCIONAL DESDE API DE iNATURALIST
+        function renderDefaultINaturalistSlots(area) {
+            document.getElementById('inat-project-desc').textContent =
+                `Espacio preparado para el proyecto de iNaturalist de ${area.name} (ID sugerido: "${area.inatProjectSlug}"). También puedes cargar observaciones reales cercanas mediante el botón de la derecha.`;
+            document.getElementById('inat-status-pill').textContent = `Proyecto: ${area.inatProjectSlug} (En preparación)`;
+
+            const slots = [
+                { title: 'Espacio Observación #1', sub: 'Flora endémica / Cactáceas / Palmas', place: area.name },
+                { title: 'Espacio Observación #2', sub: 'Avifauna / Ara rubrogenys / Cóndor', place: area.name },
+                { title: 'Espacio Observación #3', sub: 'Mastofauna / Quirópteros / Huellas', place: area.name },
+                { title: 'Espacio Observación #4', sub: 'Lepidópteros / Herpetofauna (Great Bioblitz)', place: area.name }
+            ];
+
+            document.getElementById('inat-observations-grid').innerHTML = slots.map(s => `
+                <div class="border border-dashed border-stone-300 rounded p-5 bg-stone-50 flex flex-col justify-between min-h-[190px]">
+                    <div class="flex items-center justify-between text-xs text-stone-400">
+                        <span class="font-bold uppercase text-[#5a8700]">Slot iNaturalist</span>
+                        <i data-lucide="camera" class="w-4 h-4"></i>
+                    </div>
+                    <div class="my-4">
+                        <h5 class="font-condensed text-xl font-bold text-stone-800 uppercase">${s.title}</h5>
+                        <p class="text-xs text-stone-500 mt-1">${s.sub}</p>
+                    </div>
+                    <span class="text-[11px] text-stone-400 font-medium">📍 ${s.place}</span>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        // Conecta con la API pública oficial de iNaturalist usando las coordenadas del Área Protegida en Chuquisaca
+        async function loadLiveINaturalist() {
+            const area = mainAreasData[currentAreaKey];
+            const grid = document.getElementById('inat-observations-grid');
+            const pill = document.getElementById('inat-status-pill');
+            pill.textContent = 'Consultando API de iNaturalist...';
+
+            try {
+                const url = `https://api.inaturalist.org/v1/observations?lat=${area.inatCoords.lat}&lng=${area.inatCoords.lng}&radius=${area.inatCoords.radius}&per_page=4&photos=true&locale=es`;
+                const res = await fetch(url);
+                const data = await res.json();
+
+                if (data.results && data.results.length > 0) {
+                    pill.textContent = `Mostrando ${data.results.length} registros reales georreferenciados en la zona`;
+                    grid.innerHTML = data.results.map(obs => {
+                        const photoUrl = obs.photos && obs.photos[0] ? obs.photos[0].url.replace('square', 'medium') : 'https://images.unsplash.com/photo-1534567153574-2b12153a87f0?auto=format&fit=crop&w=600&q=80';
+                        const commonName = obs.taxon && obs.taxon.preferred_common_name ? obs.taxon.preferred_common_name : (obs.species_guess || 'Observación registrada');
+                        const sciName = obs.taxon ? obs.taxon.name : '';
+                        const observer = obs.user ? obs.user.login : 'observador';
+                        return `
+                            <a href="${obs.uri || 'https://www.inaturalist.org'}" target="_blank" rel="noopener noreferrer" class="mosaic-tile h-60 rounded border border-stone-300 block group">
+                                <img src="${photoUrl}" alt="${commonName}" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent p-4 flex flex-col justify-end">
+                                    <span class="text-[10px] font-bold uppercase text-[#a3e635]">iNaturalist • @${observer}</span>
+                                    <h5 class="font-condensed text-xl font-bold text-white uppercase leading-tight">${commonName}</h5>
+                                    <p class="text-xs italic text-stone-300">${sciName}</p>
+                                </div>
+                            </a>
+                        `;
+                    }).join('');
+                } else {
+                    pill.textContent = 'Zona lista para nuevos registros en iNaturalist';
+                }
+            } catch (e) {
+                pill.textContent = 'Modo sin conexión (Mostrando slots del proyecto)';
+            }
+        }
+
+        function switchSubtab(tabName) {
+            currentSubtab = tabName;
+            const tabs = ['inicio', 'especies', 'reglamentacion', 'turismo', 'investigacion', 'proyectos'];
+            tabs.forEach(t => {
+                const content = document.getElementById('subtab-' + t);
+                const btn = document.getElementById('subtab-btn-' + t);
+                if (t === tabName) {
+                    content.classList.remove('hidden');
+                    btn.className = 'subtab-btn shrink-0 px-5 py-4 text-xs sm:text-sm font-extrabold border-b-2 border-stone-900 text-stone-950 transition';
+                } else {
+                    content.classList.add('hidden');
+                    btn.className = 'subtab-btn shrink-0 px-5 py-4 text-xs sm:text-sm font-medium border-b-2 border-transparent text-stone-500 hover:text-stone-900 transition';
+                }
+            });
+            lucide.createIcons();
+        }
+
+        function showMainPortal() {
+            document.getElementById('area-detail-view').classList.add('hidden');
+            document.getElementById('main-portal-view').classList.remove('hidden');
+
+            document.getElementById('nav-home').className = 'px-4 py-2 rounded text-sm font-semibold bg-stone-900 text-white transition';
+            ['palmar', 'inao', 'willca'].forEach(k => {
+                const btn = document.getElementById('nav-' + k);
+                if (btn) btn.className = 'px-4 py-2 rounded text-sm font-medium text-stone-700 hover:bg-stone-200/70 transition flex items-center space-x-2';
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // LÓGICA DE REGISTRO Y MONITOREO DE DESCARGAS DE PDFs
+        function requestPdfDownload(docTitle, fileUrl) {
+            pendingPdfDoc = { title: docTitle, url: fileUrl };
+            document.getElementById('gate-doc-title').textContent = docTitle;
+            document.getElementById('gate-success-box').classList.add('hidden');
+            document.getElementById('gate-submit-btn').classList.remove('hidden');
+            document.getElementById('pdf-gate-modal').classList.remove('hidden');
+        }
+
+        function closePdfGateModal() {
+            document.getElementById('pdf-gate-modal').classList.add('hidden');
+        }
+
+        function confirmAndDownloadPdf(e) {
+            e.preventDefault();
+            if (!pendingPdfDoc) return;
+
+            const name = document.getElementById('req-name').value.trim();
+            const inst = document.getElementById('req-inst').value.trim();
+            const email = document.getElementById('req-email').value.trim();
+            const reason = document.getElementById('req-reason').value;
+            const now = new Date().toISOString().slice(0, 16).replace('T', ' ');
+
+            pdfDownloadLogs.unshift({
+                date: now,
+                doc: pendingPdfDoc.title,
+                name,
+                inst,
+                email,
+                reason
+            });
+
+            document.getElementById('download-counter-badge').textContent = pdfDownloadLogs.length;
+
+            const note = document.getElementById('gate-file-note');
+            if (pendingPdfDoc.url && pendingPdfDoc.url !== '#') {
+                note.textContent = `Abriendo archivo PDF: ${pendingPdfDoc.title}`;
+                window.open(pendingPdfDoc.url, '_blank');
+            } else {
+                note.textContent = `Tus datos (${name} - ${reason}) quedaron guardados en el botón superior "Monitoreo de Descargas". Cuando subas este archivo a la Biblioteca de Medios de WordPress de la USFX y pegues su URL en fileUrl, el PDF se descargará en este instante.`;
+            }
+
+            document.getElementById('gate-success-box').classList.remove('hidden');
+        }
+
+        function openDownloadLogModal() {
+            const tbody = document.getElementById('download-log-tbody');
+            tbody.innerHTML = pdfDownloadLogs.map(log => `
+                <tr class="hover:bg-stone-50">
+                    <td class="py-3 px-4 whitespace-nowrap text-stone-500">${log.date}</td>
+                    <td class="py-3 px-4 font-bold text-stone-900">${log.doc}</td>
+                    <td class="py-3 px-4 font-medium">${log.name}</td>
+                    <td class="py-3 px-4">${log.inst}</td>
+                    <td class="py-3 px-4 text-stone-600">${log.email}</td>
+                    <td class="py-3 px-4"><span class="px-2 py-0.5 rounded bg-stone-200 text-stone-800 font-semibold">${log.reason}</span></td>
+                </tr>
+            `).join('');
+            document.getElementById('download-log-modal').classList.remove('hidden');
+        }
+
+        function closeDownloadLogModal() {
+            document.getElementById('download-log-modal').classList.add('hidden');
+        }
+
+        function exportDownloadLogCSV() {
+            const headers = ['Fecha', 'Documento', 'Solicitante', 'Institucion', 'Correo', 'Motivo'];
+            const rows = pdfDownloadLogs.map(l => [
+                `"${l.date}"`, `"${l.doc}"`, `"${l.name}"`, `"${l.inst}"`, `"${l.email}"`, `"${l.reason}"`
+            ].join(','));
+            const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows].join('\n');
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement('a');
+            link.setAttribute('href', encodedUri);
+            link.setAttribute('download', 'monitoreo_descargas_areas_protegidas_usfx.csv');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function openJoinModal(customTitle) {
+            document.getElementById('join-modal-title').textContent = customTitle || 'Sumar Institución o Subir Investigación';
+            document.getElementById('form-feedback').classList.add('hidden');
+            document.getElementById('join-modal').classList.remove('hidden');
+        }
+        function closeJoinModal() {
+            document.getElementById('join-modal').classList.add('hidden');
+        }
+        function handleFormSubmit(e) {
+            e.preventDefault();
+            document.getElementById('form-feedback').classList.remove('hidden');
+        }
+        function openWPModal() {
+            document.getElementById('wp-modal').classList.remove('hidden');
+        }
+        function closeWPModal() {
+            document.getElementById('wp-modal').classList.add('hidden');
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderMunicipalGrid('all');
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
